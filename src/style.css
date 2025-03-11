@@ -3,3 +3,7 @@
 button {
     cursor: pointer;
 }
+
+input:focus {
+    outline: 0;
+}

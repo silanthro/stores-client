@@ -13,4 +13,8 @@ export interface RepoMetadata {
   pushed_at: Date
   branch: string
   commit?: string
+  desc?: string
+  num_tools?: number
+  readme?: string
+  tools?: ToolMetadata[]
 }

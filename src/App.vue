@@ -1,9 +1,14 @@
 <template>
-  <Main></Main>
+  <div class="">
+    <Navbar />
+    <div class="grow">
+      <RouterView />
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Main from '@/components/Main.vue'
+import Navbar from '@/components/Navbar.vue'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/utils/userStore'
 

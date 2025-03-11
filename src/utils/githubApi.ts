@@ -48,7 +48,6 @@ export async function getUserRepos(token: string) {
       break
     }
   }
-  console.log(repos[0])
   return repos.map((r) => ({
     name: r.name,
     full_name: r.full_name,
