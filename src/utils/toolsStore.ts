@@ -12,7 +12,7 @@ export const useToolsStore = defineStore('tools', {
       branch: 'main',
       commit: '54124a6a346629d58b597102a5ed18489429c7ae',
       desc: 'A set of tools for working with the local file system e.g. creating, opening, and deleting files.',
-      num_tools: 10,
+      num_tools: 2,
       readme: '# file-ops',
       tools: [
         {

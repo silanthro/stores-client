@@ -5,7 +5,7 @@ import type { RepoMetadata } from '@/utils/types'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: useStorage('user', undefined) as RemovableRef<string | undefined>,
+    username: useStorage('user', undefined) as RemovableRef<string | undefined>,
     oauthToken: useStorage('oauthToken', undefined) as RemovableRef<
       string | undefined
     >,
@@ -17,9 +17,17 @@ export const useUserStore = defineStore('user', {
   }),
   getters: {},
   actions: {
+    async login() {
+      supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          scopes: 'public_repo',
+        },
+      })
+    },
     async logout() {
       await supabase.auth.signOut()
-      this.user = undefined
+      this.username = undefined
       this.oauthToken = undefined
       this.oauthRefreshToken = undefined
     },

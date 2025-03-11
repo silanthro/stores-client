@@ -16,6 +16,9 @@ const store = useUserStore()
 
 onMounted(() => {
   supabase.auth.onAuthStateChange((_event, session) => {
+    if (session && session.user) {
+      store.username = session.user.user_metadata.preferred_username
+    }
     if (session && session.provider_token) {
       store.oauthToken = session.provider_token
     }
