@@ -2,7 +2,9 @@
   <div class="w-full h-full flex flex-col items-center gap-24 mb-36">
     <div class="flex flex-col items-center justify-center gap-4 mt-48">
       <h1 class="text-8xl font-bold font-display">Stores</h1>
-      <div class="text-xl">A public repository of tools for LLM agents</div>
+      <div class="text-xl text-neutral-600">
+        A public repository of tools for LLM agents
+      </div>
     </div>
     <div class="flex flex-col w-[30rem] max-w-full px-4 mb-4">
       <label class="text-xs font-medium uppercase">Search</label>

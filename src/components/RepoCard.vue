@@ -1,7 +1,7 @@
 <template>
   <div
     class="border-2 border-r-6 border-b-6 p-4 w-96 h-48 flex flex-col gap-2 hover:bg-orange-100 cursor-pointer">
-    <h3 class="font-medium text-xl">
+    <h3 class="font-semibold text-xl">
       {{ props.repo.full_name }}
     </h3>
     <div
