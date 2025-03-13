@@ -15,7 +15,9 @@
         {{ error }}
       </div>
       <Button>
-        <RouterLink to="/add_index">Add index</RouterLink>
+        <RouterLink v-if="userStore.username" to="/add_index"
+          >Add index</RouterLink
+        >
       </Button>
     </div>
   </div>
@@ -28,8 +30,10 @@ import ToolIndexPreview from './ToolIndexPreview.vue'
 import Button from '@/components/Button.vue'
 import { supabase } from '@/utils/supabase'
 import { RepoMetadata } from '@/utils/types'
+import { useUserStore } from '@/utils/userStore'
 
 const route = useRoute()
+const userStore = useUserStore()
 
 const loading = ref(true)
 const error = ref('')
