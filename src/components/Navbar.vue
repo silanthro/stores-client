@@ -21,8 +21,8 @@
               <button
                 class="text-left"
                 :class="{ 'bg-neutral-100': active }"
-                @click="router.push('/add_repo')">
-                Add repo
+                @click="router.push('/add_index')">
+                Add index
               </button>
             </MenuItem>
             <MenuItem v-slot="{ active }" class="px-4 py-2">

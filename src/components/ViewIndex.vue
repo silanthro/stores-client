@@ -15,7 +15,7 @@
         {{ error }}
       </div>
       <Button>
-        <RouterLink to="/add_repo">Add repo</RouterLink>
+        <RouterLink to="/add_index">Add index</RouterLink>
       </Button>
     </div>
   </div>
