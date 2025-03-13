@@ -37,10 +37,10 @@
 </template>
 <script setup lang="ts">
 import { PropType, onMounted, ref } from 'vue'
-import ToolIndexPreview from './ToolIndexPreview.vue'
-import BranchIcon from './icons/BranchIcon.vue'
-import CTAButton from '@/components/CTAButton.vue'
-import Listbox from '@/components/Listbox.vue'
+import ToolIndexPreview from '@/components/ToolIndexPreview.vue'
+import CTAButton from '@/components/elements/CTAButton.vue'
+import Listbox from '@/components/elements/Listbox.vue'
+import BranchIcon from '@/components/icons/BranchIcon.vue'
 import { getBranches, loadToolIndex } from '@/utils/githubApi'
 import { RepoMetadata } from '@/utils/types'
 import { useUserStore } from '@/utils/userStore'

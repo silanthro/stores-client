@@ -1,19 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AddIndex from '@/components/AddIndex.vue'
-import Main from '@/components/Main.vue'
-import Repo from '@/components/Repo.vue'
-import ViewIndex from '@/components/ViewIndex.vue'
+import AddIndex from '@/pages/AddIndex.vue'
+import Main from '@/pages/Main.vue'
+import ViewIndex from '@/pages/ViewIndex.vue'
 
 export const routes = [
   {
     path: '/',
     name: 'Home',
     component: Main,
-  },
-  {
-    path: '/repo',
-    name: 'Repo',
-    component: Repo,
   },
   {
     path: '/add_index',

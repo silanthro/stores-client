@@ -44,8 +44,8 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 import { PropType } from 'vue'
-import Markdown from '@/components/Markdown.vue'
 import ToolDescription from '@/components/ToolDescription.vue'
+import Markdown from '@/components/elements/Markdown.vue'
 import { RepoMetadata } from '@/utils/types'
 
 const props = defineProps({

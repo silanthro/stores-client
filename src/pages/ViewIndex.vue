@@ -1,12 +1,14 @@
 <template>
-  <div class="w-full h-full flex flex-col mt-24 gap-8">
-    <div v-if="loading" class="h-full flex justify-center items-center">
+  <div class="w-full h-full flex flex-col gap-8">
+    <div v-if="loading" class="mt-24 h-full flex justify-center items-center">
       Loading...
     </div>
-    <div v-else-if="index" class="w-full flex flex-col gap-4">
-      <div class="flex items-center gap-3">
-        <h2>{{ index.full_name }}</h2>
-        <CopyButton :copy="index.full_name" />
+    <div v-else-if="index" class="mt-24 w-full flex flex-col gap-4">
+      <div class="flex items-center gap-3 justify-between">
+        <div class="flex items-center gap-3">
+          <h2>{{ index.full_name }}</h2>
+          <CopyButton :copy="index.full_name" />
+        </div>
       </div>
       <ToolIndexPreview :index="index" />
     </div>
@@ -14,20 +16,20 @@
       <div>
         {{ error }}
       </div>
-      <Button>
+      <button
+        class="border px-4 py-3 hover:outline-1 text-neutral-600 hover:text-black">
         <RouterLink v-if="userStore.username" to="/add_index"
-          >Add index</RouterLink
+          >Add an index</RouterLink
         >
-      </Button>
+      </button>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import CopyButton from './CopyButton.vue'
-import ToolIndexPreview from './ToolIndexPreview.vue'
-import Button from '@/components/Button.vue'
+import ToolIndexPreview from '@/components/ToolIndexPreview.vue'
+import CopyButton from '@/components/elements/CopyButton.vue'
 import { supabase } from '@/utils/supabase'
 import { RepoMetadata } from '@/utils/types'
 import { useUserStore } from '@/utils/userStore'
@@ -50,7 +52,7 @@ async function fetchIndex(indexName: string) {
   const fetchIndexRequest = await supabase
     .from('tool_indexes')
     .select(
-      'full_name,clone_url,description,readme,tools(name,doc,inputs,output)',
+      'full_name,clone_url,branch,commit,description,readme,tools(name,doc,inputs,output)',
     )
     .eq('full_name', indexName)
     .single()

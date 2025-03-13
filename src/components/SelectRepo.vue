@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { computed, onMounted, ref } from 'vue'
-import Combobox from './Combobox.vue'
+import Combobox from '@/components/elements/Combobox.vue'
 import { RepoMetadata } from '@/utils/types'
 import { useUserStore } from '@/utils/userStore'
 import { prettifyDate } from '@/utils/utils'

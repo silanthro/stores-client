@@ -15,13 +15,12 @@
           </div>
         </div>
       </div>
-      <div
-        class="w-full h-full border max-w-[28rem] max-h-[32rem] overflow-auto p-10 shrink-0">
+      <div class="w-full h-full max-w-[28rem] max-h-[32rem] shrink-0">
         <CodeSnippet />
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      <RepoCard
+      <IndexCard
         v-for="index in toolsStore.tool_indexes"
         :repo="index"
         @click="router.push(`index/${index.full_name}`)" />
@@ -33,7 +32,7 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import CodeSnippet from '@/components/CodeSnippet.vue'
-import RepoCard from '@/components/RepoCard.vue'
+import IndexCard from '@/components/IndexCard.vue'
 import { useToolsStore } from '@/utils/toolsStore'
 
 const toolsStore = useToolsStore()
