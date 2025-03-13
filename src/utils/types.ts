@@ -6,15 +6,14 @@ export interface ToolMetadata {
 }
 
 export interface RepoMetadata {
-  name: string
   full_name: string
   clone_url: string
-  created_at: Date
+  added_at?: Date
   pushed_at: Date
   branch: string
+  owner?: string
   commit?: string
   desc?: string
-  num_tools?: number
   readme?: string
   tools?: ToolMetadata[]
 }

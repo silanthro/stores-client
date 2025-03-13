@@ -5,6 +5,13 @@
 @theme {
     --font-display: "Satoshi", "sans-serif";
     --font-sans: "Inter", "sans-serif";
+    --color-black: var(--color-neutral-800);
+}
+
+@layer base {
+    * {
+        border-color: var(--color-neutral-300);
+    }
 }
 
 button {
@@ -13,4 +20,25 @@ button {
 
 input:focus {
     outline: 0;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-8xl); /* 6rem (96px) */ 
+    line-height: var(--text-8xl--line-height); /* 1 */
+    font-weight: 700;
+}
+
+h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl); /* 6rem (96px) */ 
+    line-height: var(--text-4xl--line-height); /* 1 */
+    font-weight: 700;
+}
+
+h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl); /* 6rem (96px) */ 
+    line-height: var(--text-3xl--line-height); /* 1 */
+    font-weight: 700;
 }

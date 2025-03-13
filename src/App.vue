@@ -1,7 +1,7 @@
 <template>
-  <div class="">
+  <div class="h-screen w-full flex flex-col text-black">
     <Navbar />
-    <div class="grow">
+    <div class="grow w-full max-w-[72rem] mx-auto">
       <RouterView />
     </div>
   </div>

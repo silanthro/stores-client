@@ -18,14 +18,17 @@
           <MenuItems
             class="absolute top-full right-0 bg-white border w-max min-w-36 flex flex-col">
             <MenuItem v-slot="{ active }" class="px-4 py-2">
-              <RouterLink :class="{ 'bg-orange-100': active }" to="/user">
-                Share repo
-              </RouterLink>
+              <button
+                class="text-left"
+                :class="{ 'bg-neutral-100': active }"
+                @click="router.push('/add_repo')">
+                Add repo
+              </button>
             </MenuItem>
             <MenuItem v-slot="{ active }" class="px-4 py-2">
               <button
-                class="block text-left"
-                :class="[active ? 'bg-orange-100' : '']"
+                class="text-left"
+                :class="[active ? 'bg-neutral-100' : '']"
                 @click="userStore.logout">
                 Log out
               </button>
@@ -41,9 +44,10 @@
 </template>
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useUserStore } from '@/utils/userStore'
 
+const router = useRouter()
 const userStore = useUserStore()
 const pages = [
   {

@@ -1,34 +1,46 @@
 <template>
-  <div class="w-full h-full flex flex-col items-center gap-24 mb-36">
-    <div class="flex flex-col items-center justify-center gap-4 mt-48">
-      <h1 class="text-8xl font-bold font-display">Stores</h1>
-      <div class="text-xl text-neutral-600">
-        A public repository of tools for LLM agents
+  <div class="w-full h-full flex flex-col gap-24 mb-36 mx-auto">
+    <div class="flex mt-24 items-end justify-between gap-24 w-full">
+      <div class="space-y-16 shrink">
+        <div class="space-y-4">
+          <h1>Stores</h1>
+          <div class="text-xl text-neutral-500">
+            A public repository of tools for LLM agents
+          </div>
+        </div>
+        <div class="flex flex-col max-w-[30rem]">
+          <div class="px-3 py-2 text-lg bg-neutral-100 flex items-center gap-2">
+            <MagnifyingGlassIcon class="w-4 h-4 text-neutral-500" />
+            <input type="text" placeholder="Plot a graph" />
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-col w-[30rem] max-w-full px-4 mb-4">
-      <label class="text-xs font-medium uppercase">Search</label>
-      <div class="border-2 px-4 py-2 text-lg">
-        <input type="text" placeholder="Plot a graph" />
+      <div
+        class="w-full h-full border max-w-[28rem] max-h-[32rem] overflow-auto p-10 shrink-0">
+        <CodeSnippet />
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       <RepoCard
         v-for="index in toolsStore.tool_indexes"
         :repo="index"
-        @click="openRepo" />
+        @click="router.push(`index/${index.full_name}`)" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import CodeSnippet from '@/components/CodeSnippet.vue'
 import RepoCard from '@/components/RepoCard.vue'
 import { useToolsStore } from '@/utils/toolsStore'
 
 const toolsStore = useToolsStore()
 
 const router = useRouter()
-function openRepo() {
-  router.push('/repo')
-}
+
+onMounted(() => {
+  toolsStore.init()
+})
 </script>
