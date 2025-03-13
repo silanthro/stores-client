@@ -51,7 +51,7 @@ export const useUserStore = defineStore('user', {
           clone_url: index.clone_url,
           branch: index.branch,
           commit: index.commit,
-          desc: index.desc,
+          description: index.description,
           readme: index.readme,
           // user: '',
         })

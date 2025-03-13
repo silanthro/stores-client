@@ -20,10 +20,7 @@
       Loading...
     </div>
     <div v-else-if="index && index.tools">
-      <div>
-        <div class="border w-full" v-if="loading">Loading...</div>
-        <ToolIndexPreview v-else :index="index" />
-      </div>
+      <ToolIndexPreview :index="index" />
     </div>
     <div
       v-else
@@ -95,6 +92,7 @@ onMounted(async () => {
       ...index.value,
       commit: branch.value.commit,
       readme: fetchedIndex.readme,
+      description: fetchedIndex.description,
       tools: fetchedIndex.tools,
     } as RepoMetadata
   }

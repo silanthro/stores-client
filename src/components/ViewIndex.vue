@@ -49,7 +49,9 @@ async function fetchIndex(indexName: string) {
   // Fetch tool from supabase
   const fetchIndexRequest = await supabase
     .from('tool_indexes')
-    .select('full_name,clone_url,desc,readme,tools(name,doc,inputs,output)')
+    .select(
+      'full_name,clone_url,description,readme,tools(name,doc,inputs,output)',
+    )
     .eq('full_name', indexName)
     .single()
   if (fetchIndexRequest.error) {

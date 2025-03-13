@@ -6,7 +6,7 @@
     </div>
     <div
       class="grow shrink overflow-hidden text-sm line-clamp-4 text-neutral-500">
-      {{ props.repo.desc || 'No description' }}
+      {{ props.repo.description || 'No description' }}
     </div>
     <div v-if="props.repo.tools">
       {{ props.repo.tools.length }} tool{{

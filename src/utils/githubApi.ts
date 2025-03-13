@@ -123,7 +123,8 @@ export async function loadToolIndex(clone_url: string) {
     return { error: responseJSON }
   }
   return {
-    tools: responseJSON.tools_metadata as ToolMetadata[],
+    tools: responseJSON.index.tools as ToolMetadata[],
+    description: responseJSON.index.description as string,
     readme: responseJSON.readme as string,
   }
 }

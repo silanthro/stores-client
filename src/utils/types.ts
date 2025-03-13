@@ -13,7 +13,7 @@ export interface RepoMetadata {
   branch: string
   owner?: string
   commit?: string
-  desc?: string
+  description?: string
   readme?: string
   tools?: ToolMetadata[]
 }
