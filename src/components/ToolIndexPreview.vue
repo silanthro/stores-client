@@ -3,8 +3,10 @@
     <div class="flex">
       <button
         v-for="tab in tabs"
-        class="px-4 py-2 font-medium text-sm flex items-center gap-1"
-        :class="[selectedTab === tab.name ? 'border-b-1 border-black' : '']"
+        class="px-4 py-2 font-medium text-sm flex items-center gap-1 border-b-1"
+        :class="[
+          selectedTab === tab.name ? ' border-black' : 'border-transparent',
+        ]"
         @click="selectedTab = tab.name">
         <div class="w-4 h-4 flex items-center justify-center">
           <component :is="tab.icon" />
