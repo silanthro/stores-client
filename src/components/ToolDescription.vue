@@ -8,7 +8,8 @@
       <span
         v-for="input in tool.inputs"
         class="border border-neutral-100 bg-neutral-50 text-md flex items-center justify-center py-0 px-1 h-min whitespace-nowrap">
-        {{ input.name }}: {{ input.type }}
+        {{ input.name }}: {{ input.type
+        }}{{ input.default ? ` = ${input.default}` : '' }}
       </span>
       )
       <ArrowRightIcon class="w-4 h-4" />
