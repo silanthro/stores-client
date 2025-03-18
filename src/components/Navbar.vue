@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full flex justify-between py-4 px-10">
-    <RouterLink to="/" class="px-4 py-2 font-semibold text-2xl font-display">
+  <div class="z-10 w-full fixed bg-white flex justify-between items-center py-2 px-10 border-b border-neutral-200">
+    <RouterLink to="/" class="px-2 font-semibold text-2xl font-display">
       Stores
     </RouterLink>
     <div class="flex items-center">
@@ -52,7 +52,7 @@ const userStore = useUserStore()
 const pages = [
   {
     name: 'How to use',
-    link: '/',
+    link: '/docs',
   },
   {
     name: 'Contribute',

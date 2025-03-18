@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col gap-8">
+  <div class="max-w-[72rem] h-full flex flex-col gap-8">
     <div v-if="loading" class="mt-24 h-full flex justify-center items-center">
       Loading...
     </div>

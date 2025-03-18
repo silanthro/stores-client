@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col mt-24 gap-8">
+  <div class="max-w-[72rem] h-full flex flex-col mt-24 gap-8">
     <div class="w-full flex justify-between">
       <h2>Add Index</h2>
       <button
