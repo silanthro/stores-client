@@ -26,7 +26,5 @@ response = completion(
     messages=messages,
 ).choices[0].message.content
 
-output = index.parse_and_execute(response)
-
-toolcall = stores.llm_parse_json(response)`
+output = index.parse_and_execute(response)`
 </script>
