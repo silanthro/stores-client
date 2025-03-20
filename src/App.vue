@@ -8,12 +8,13 @@
 </template>
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useToolsStore } from './utils/toolsStore'
 import Navbar from '@/components/Navbar.vue'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/utils/userStore'
 
 const store = useUserStore()
-
+const toolsStore = useToolsStore()
 onMounted(() => {
   supabase.auth.onAuthStateChange((_event, session) => {
     if (session && session.user) {
@@ -27,5 +28,6 @@ onMounted(() => {
       store.oauthRefreshToken = session.provider_refresh_token
     }
   })
+  toolsStore.init()
 })
 </script>
