@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-typescript'
@@ -22,10 +22,8 @@ import type { CodeBlockProps } from '@/utils/types'
 
 const props = defineProps<CodeBlockProps>()
 
-const highlightedCode = ref('')
-
-onMounted(() => {
-  highlightedCode.value = Prism.highlight(
+const highlightedCode = computed(() => {
+  return Prism.highlight(
     props.code,
     Prism.languages[props.language] || Prism.languages.plaintext,
     props.language

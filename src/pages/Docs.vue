@@ -13,16 +13,16 @@
       />
     </div>
     <template v-else>
-      <div class="relative flex-1 py-8 px-24 overflow-y-auto">
+      <div class="relative flex-1 py-8 px-24 mx-auto flex flex-col items-center overflow-y-auto">
         <button 
           @click="copyFullTutorial"
           class="px-2 py-1 text-sm text-center bg-white border border-neutral-200 rounded-md hover:bg-neutral-100 transition-colors absolute right-24 top-9"
         >
           <span v-if="copySuccess" class="flex flex-row items-center gap-2"><CheckCircleIcon class="w-4 h-4" /> Copied!</span>
-          <span v-else class="flex flex-row items-center gap-2"><ClipboardIcon class="w-4 h-4" /> Copy for LLM</span>
+          <span v-else class="flex flex-row items-center gap-2"><DocumentDuplicateIcon class="w-4 h-4" /> Copy for LLM</span>
         </button>
         <div class="prose prose-neutral max-w-4xl
-          prose-h1:text-3xl!
+          prose-h1:text-3xl! prose-h1:max-w-2xl
           prose-h2:text-2xl!
           prose-h3:text-lg!
           prose-headings:font-semibold 
@@ -31,7 +31,7 @@
           prose-code:before:content-none prose-code:after:content-none"
         >
           <div class="markdown-content">
-            <template v-for="(node, index) in renderedContent" :key="index">
+            <template v-for="(node, index) in renderedContent" :key="`${currentTutorialId}-${index}`">
               <component 
                 v-if="typeof node === 'object'" 
                 :is="node" 
@@ -60,7 +60,7 @@ import TutorialsGrid from '@/components/docs/TutorialsGrid.vue'
 import CodeBlock from '@/components/docs/CodeBlock.vue'
 import { loadTutorial, parseMarkdown } from '@/utils/markdown-renderer'
 import type { Tutorial } from '@/utils/types'
-import { CheckCircleIcon, ClipboardIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, DocumentDuplicateIcon } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 const router = useRouter()
@@ -69,14 +69,15 @@ const tutorials: Ref<Tutorial[]> = ref([
   { id: 'openai-chat', title: 'Chat Completions', section: 'OpenAI', filename: 'openai.svg' },
   { id: 'openai-responses', title: 'Responses', section: 'OpenAI', filename: 'openai.svg' },
   { id: 'anthropic', title: 'Claude', section: 'Anthropic', filename: 'anthropic.jpg' },
-  { id: 'google-gemini', title: 'Gemini', section: 'Google', filename: 'google-gemini.png' },
-  { id: 'langchain-basic', title: 'Basic Usage', section: 'LangChain', filename: 'langchain.jpg' },
+  { id: 'google-gemini-auto', title: 'Gemini (Auto)', section: 'Google', filename: 'google-gemini.png' },
+  { id: 'google-gemini-manual', title: 'Gemini (Manual)', section: 'Google', filename: 'google-gemini.png' },
+  // { id: 'langchain-basic', title: 'Basic Usage', section: 'LangChain', filename: 'langchain.jpg' },
   { id: 'langchain-tools', title: 'Tool Calling', section: 'LangChain', filename: 'langchain.jpg' },
-  { id: 'langgraph', title: 'LangGraph', section: 'LangChain', filename: 'langchain.jpg' },
-  { id: 'litellm-basic', title: 'Basic Usage', section: 'LiteLLM', filename: 'litellm.jpg' },
+  { id: 'langgraph', title: 'Agent', section: 'LangChain', filename: 'langchain.jpg' },
+  // { id: 'litellm-basic', title: 'Basic Usage', section: 'LiteLLM', filename: 'litellm.jpg' },
   { id: 'litellm-tools', title: 'Tool Calling', section: 'LiteLLM', filename: 'litellm.jpg' },
-  { id: 'llamaindex-basic', title: 'Basic Usage', section: 'LlamaIndex', filename: 'llamaindex.jpg' },
-  { id: 'llamaindex-tools', title: 'Tool Calling', section: 'LlamaIndex', filename: 'llamaindex.jpg' }
+  // { id: 'llamaindex-basic', title: 'Basic Usage', section: 'LlamaIndex', filename: 'llamaindex.jpg' },
+  { id: 'llamaindex-agent', title: 'Agent', section: 'LlamaIndex', filename: 'llamaindex.jpg' }
 ])
 
 const currentTutorialId: Ref<string | null> = ref(null)
@@ -117,6 +118,9 @@ const copyFullTutorial = async (): Promise<void> => {
 }
 
 const loadTutorialContent = async (): Promise<void> => {
+  // Clear existing content first
+  tutorialContent.value = ''
+  
   if (currentTutorialId.value) {
     tutorialContent.value = await loadTutorial(currentTutorialId.value)
   }
