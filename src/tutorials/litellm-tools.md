@@ -1,16 +1,8 @@
-# Use Stores with LiteLLM (with Tool Calling)
+# Use Stores with LiteLLM (Native Tool Calls)
 
-In this tutorial, we will be creating an agent that can generate a poem and email it to a recipient using LiteLLM with native function calls. LiteLLM is a library that provides a unified interface to various language models, making it easy to switch between providers.
+In this tutorial, we will be creating an agent that can generate a haiku about dreams and email it to a recipient. While LiteLLM models can generate text, they need [additional tools](https://docs.litellm.ai/docs/completion/function_call) to perform actions like sending emails. Using Stores, we will add a tool for sending a simple plaintext email via Gmail to a list of recipients.
 
-## Agent building steps
-
-### 1. Load custom tools and set environment variables
-
-Our custom tools are stored in our local `custom_tools` directory. We will load them and set the required environment variables in the `.env` file. Not all tools require environment variables but this allows you to securely pass information, such as API keys, to your tools.
-
-- GMAIL_ADDRESS: This is the sender's Gmail address
-- GMAIL_PASSWORD: This is the sender's [app password](https://myaccount.google.com/apppasswords), **not the regular Gmail password**
-- GOOGLE_API_KEY: Since we're using Gemini in this example, we need to set the [Google AI API key](https://ai.google.dev/)
+## Tool calling example
 
 ```python
 import json
@@ -20,12 +12,60 @@ from litellm import completion
 
 import stores
 
+def main():
+    index = stores.Index(
+        ["silanthro/send-gmail"],
+        env_vars={
+            "silanthro/send-gmail": {
+                "GMAIL_ADDRESS": os.environ["GMAIL_ADDRESS"],
+                "GMAIL_PASSWORD": os.environ["GMAIL_PASSWORD"],
+            },
+        },
+    )
 
-# Load custom tools from local directory and set the required environment variables
+    response = completion(
+        model="gemini/gemini-2.0-flash-001",
+        messages=[
+            {
+                "role": "user",
+                "content": "Send a haiku about dreams to x@gmail.com. Don't ask questions.",
+            }
+        ],
+        tools=index.format_tools("google-gemini"),
+    )
+
+    print(response.choices[0].message.tool_calls)
+
+if __name__ == "__main__":
+    main()
+```
+
+**Output**
+
+```bash
+{
+    "function": {
+        "name": "tools-send_gmail",
+        "arguments": {
+            "subject": "Dreams",
+            "body": "Silent whispers flow,\nWorlds unseen begin to bloom,\nDawn awakes the soul.",
+            "recipients": ["x@gmail.com"]
+        }
+    },
+    "id": "call_64c9ff1e-839c-4775-abcd-de26c0984265",
+    "type": "function"
+}
+```
+
+## Tool calling steps
+
+### 1. Load the tools
+
+```python
 index = stores.Index(
-    ["./custom_tools"],
+    ["silanthro/send-gmail"],
     env_vars={
-        "./custom_tools": {
+        "silanthro/send-gmail": {
             "GMAIL_ADDRESS": os.environ["GMAIL_ADDRESS"],
             "GMAIL_PASSWORD": os.environ["GMAIL_PASSWORD"],
         },
@@ -33,79 +73,64 @@ index = stores.Index(
 )
 ```
 
-You can also load tools from a remote source, such as a GitHub repository, as long as it has a TOOLS.yml file that lists the tools.
+You can also load your own custom tools from your repository. Each local tools folder must have the function(s) and a `TOOLS.yml` file that lists the functions. See [silanthro/send-gmail](https://github.com/silanthro/send-gmail) for an example.
 
 ```python
-# Alternatives
-
-# 1. Load default tools
-index = stores.Index()
-
-# 2. Load tools from a remote source
-index = stores.Index(["greentfrapp/file-ops"])
+index = stores.Index(["./local_tools"])
 ```
 
-### 2. Set up variables
-
-To keep things tidy, we will specify these variables upfront.
-
-We are using the `gemini/gemini-2.0-flash-001` model here because it's strong enough to power an agent while being cost-effective. Note that LiteLLM prefixes the model name with the provider.
-
-Since we're using native function calls, we need to format our tools using `index.format_tools()` with the appropriate model type.
+### 2. Call the model with tools
 
 ```python
-user_request = "Make up a parenting poem and email it to x@gmail.com, without asking any questions"
-system_instruction = "You are a helpful assistant who can generate poems in emails. You do not have to ask for confirmations."
-model = "gemini/gemini-2.0-flash-001"
-tools = index.format_tools("google-gemini")
-messages = [
-    {"role": "system", "content": system_instruction},
-    {"role": "user", "content": user_request},
-]
+response = completion(
+    model="gemini/gemini-2.0-flash-001",
+    messages=[
+        {
+            "role": "user",
+            "content": "Send a haiku about dreams to x@gmail.com. Don't ask questions.",
+        }
+    ],
+    tools=index.format_tools("google-gemini"),
+)
 ```
 
-### 3. Create the agent loop
+`index.format_tools("google-gemini")` formats the tools according to the JSON schema required by the Google Gemini API via LiteLLM.
 
-The agent loop is a `while` loop that repeatedly gets a response from the model and executes the tool calls until the agent has completed the task.
+### 3. Get the tool name and arguments from the model
+
+```bash
+# response.choices[0].message.tool_calls
+{
+    "function": {
+        "name": "tools-send_gmail",
+        "arguments": {
+            "subject": "Dreams",
+            "body": "Silent whispers flow,\nWorlds unseen begin to bloom,\nDawn awakes the soul.",
+            "recipients": ["x@gmail.com"]
+        }
+    },
+    "id": "call_64c9ff1e-839c-4775-abcd-de26c0984265",
+    "type": "function"
+}
+```
+
+### 4. Execute the tool call
 
 ```python
-# Run the agent loop
-while True:
-    # Get the response from the model
-    # LiteLLM has a function to turn functions into dict: https://docs.litellm.ai/docs/completion/function_call#litellmfunction_to_dict---convert-functions-to-dictionary-for-openai-function-calling
-    # But it doesn't support type unions: https://github.com/BerriAI/litellm/issues/4249
-    # So we need to use the format_tools method
-    response = completion(
-        model=model,
-        messages=messages,
-        tools=tools,
-        num_retries=3,
-        timeout=60,
-    )
-
-    # Execute the tool calls
-    tool_calls = response.choices[0].message.tool_calls
-    for tool_call in tool_calls:
-        name = tool_call.function.name.replace("-", ".")
-        args = json.loads(tool_call.function.arguments)
-
-        # If the REPLY tool is called, break the loop and return the message
-        if tool_call.function.name == "REPLY":
-            print(f"Assistant Response: {args['msg']}")
-            return
-
-        # Otherwise, execute the tool call
-        output = index.execute(name, args)
-        messages.append({"role": "assistant", "content": str(tool_call)}) # Append the assistant's tool call as context
-        messages.append({"role": "user", "content": f"Tool Output: {output}"}) # Some APIs require a tool role instead
-        print(f"Tool Output: {output}")
+fn_name = tool_call.function.name.replace("-", ".")
+fn_args = json.loads(tool_call.function.arguments)
+result = index.execute(fn_name, fn_args)
 ```
+
+If you want, you can supply the result to the model and call the model again.
 
 ## Full code
 
-Note: You will need the custom tools directory for this script to work as intended.
-
 ```python
+"""
+This example shows how to use stores with LiteLLM with native function calls.
+"""
+
 import json
 import os
 
@@ -115,71 +140,35 @@ import stores
 
 
 def main():
-    # Load custom tools and set the required environment variables
+    # Load tools and set the required environment variables
     index = stores.Index(
-        ["./custom_tools"],
+        ["silanthro/send-gmail"],
         env_vars={
-            "./custom_tools": {
+            "silanthro/send-gmail": {
                 "GMAIL_ADDRESS": os.environ["GMAIL_ADDRESS"],
                 "GMAIL_PASSWORD": os.environ["GMAIL_PASSWORD"],
             },
         },
     )
 
-    # Set up the user request, system instruction, model parameters, tools, and initial messages
-    user_request = "Make up a parenting poem and email it to x@gmail.com, without asking any questions"
-    system_instruction = "You are a helpful assistant who can generate poems in emails. You do not have to ask for confirmations."
-    model = "gemini/gemini-2.0-flash-001"
-    tools = index.format_tools("google-gemini")
-    messages = [
-        {"role": "system", "content": system_instruction},
-        {"role": "user", "content": user_request},
-    ]
+    # Get the response from the model
+    response = completion(
+        model="gemini/gemini-2.0-flash-001",
+        messages=[
+            {
+                "role": "user",
+                "content": "Send a haiku about dreams to x@gmail.com. Don't ask questions.",
+            }
+        ],
+        tools=index.format_tools("google-gemini"),
+    )
 
-    # Run the agent loop
-    while True:
-        # Get the response from the model
-        # LiteLLM has a function to turn functions into dict: https://docs.litellm.ai/docs/completion/function_call#litellmfunction_to_dict---convert-functions-to-dictionary-for-openai-function-calling
-        # But it doesn't support type unions: https://github.com/BerriAI/litellm/issues/4249
-        # So we need to use the format_tools method
-        response = completion(
-            model=model,
-            messages=messages,
-            tools=tools,
-            num_retries=3,
-            timeout=60,
-        )
-
-        # Execute the tool calls
-        tool_calls = response.choices[0].message.tool_calls
-        for tool_call in tool_calls:
-            name = tool_call.function.name.replace("-", ".")
-            args = json.loads(tool_call.function.arguments)
-
-            # If the REPLY tool is called, break the loop and return the message
-            if tool_call.function.name == "REPLY":
-                print(f"Assistant Response: {args['msg']}")
-                return
-
-            # Otherwise, execute the tool call
-            output = index.execute(name, args)
-            messages.append({"role": "assistant", "content": str(tool_call)}) # Append the assistant's tool call as context
-            messages.append({"role": "user", "content": f"Tool Output: {output}"}) # Some APIs require a tool role instead
-            print(f"Tool Output: {output}")
+    print(response.choices[0].message.tool_calls)
 
 
 if __name__ == "__main__":
     main()
-```
 
-## Expected output
-
-After running the script above, you should see an output similar to following and the email should be sent to the recipient:
-
-```
-Tool Call: ToolCall(function=FunctionParameters(name='comms-gmail-send_email_via_gmail', arguments='{"subject": "A Parenting Journey", "body": "In the quiet of dawn, I watch you sleep,\\nA precious gift I\'m blessed to keep.\\nTiny fingers, gentle breaths so light,\\nGuiding you through day and night.\\n\\nFrom first steps to scraped knee days,\\nYour courage shown in countless ways.\\nBedtime stories, lullabies sweet,\\nMaking every moment complete.\\n\\nThrough tears and laughter, hand in hand,\\nBuilding castles in life\'s sand.\\nWatching you grow, learn, and shine,\\nThis parenting journey, yours and mine.\\n\\nSo here\'s my promise, forever true,\\nI\'ll always be right here for you.\\nFor in this dance of love so pure,\\nTogether we\'ll forever endure.", "recipients": ["x@gmail.com"]}'))
-Tool Output: Email sent successfully
-Assistant Response: I've composed a heartfelt parenting poem and sent it to x@gmail.com. The email has been delivered successfully!
 ```
 
 ## Next steps
