@@ -1,15 +1,15 @@
 <!-- TableOfContents.vue -->
 <template>
-  <div class="w-64 py-8 border-l border-neutral-200 h-[calc(100vh-60px)] sticky top-14">
-    <div class="overflow-y-auto h-full">
-      <p class="text-sm font-semibold px-8 mb-4">On this page</p>
-      <nav class="space-y-1">
+  <div class="w-56 sticky top-0 hidden xl:block">
+    <div class="pb-8 max-h-[calc(100vh-60px)] overflow-y-auto">
+      <p class="uppercase font-mono text-neutral-600 pr-6 mb-4">On this page</p>
+      <nav class="space-y-1 border-l-2 border-neutral-200">
         <a 
           v-for="heading in headings" 
           :key="heading.id"
           :href="`#${heading.id}`"
           :class="[
-            'block px-8 border-l-2 transition-colors',
+            '-ml-[2px] block px-6 border-l-2 transition-colors',
             activeId === heading.id 
               ? 'border-neutral-800 text-neutral-800 font-medium' 
               : 'border-transparent text-neutral-400 hover:text-neutral-600'
@@ -99,6 +99,10 @@ const setupIntersectionObserver = () => {
 
 watch(() => props.content, (newContent) => {
   headings.value = extractHeadings(newContent)
+  // Set the first heading as active by default if there are headings and no hash in URL
+  if (headings.value.length > 0 && !route.hash) {
+    activeId.value = headings.value[0].id
+  }
   // Wait for Vue to update the DOM before setting up the observer
   nextTick(() => {
     if (observer) {
