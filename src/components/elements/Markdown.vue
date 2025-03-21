@@ -5,7 +5,11 @@
 import markdownit from 'markdown-it'
 import { computed } from 'vue'
 
-const md = markdownit()
+const md = markdownit({
+  html: true,
+  linkify: true,
+  typographer: true,
+})
 
 const props = defineProps({
   markdown: {

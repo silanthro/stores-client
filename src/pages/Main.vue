@@ -29,7 +29,6 @@
 </template>
 <script setup lang="ts">
 import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
-import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import CodeSnippet from '@/components/CodeSnippet.vue'
 import IndexCard from '@/components/IndexCard.vue'
@@ -38,8 +37,4 @@ import { useToolsStore } from '@/utils/toolsStore'
 const toolsStore = useToolsStore()
 
 const router = useRouter()
-
-onMounted(() => {
-  toolsStore.init()
-})
 </script>

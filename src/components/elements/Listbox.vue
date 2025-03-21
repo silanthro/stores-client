@@ -13,14 +13,15 @@
           </div>
         </div>
       </ListboxButton>
-      <ListboxOptions class="absolute border w-full bg-white shadow">
+      <ListboxOptions
+        class="absolute border w-max max-w-[200%] bg-white shadow">
         <ListboxOption
           v-for="(option, i) in props.options"
           :key="i"
           :value="option"
           v-slot="{ active }">
           <button
-            class="w-full text-left px-4 py-2"
+            class="w-full text-left px-4 py-2 truncate"
             :class="[active ? 'bg-neutral-100' : '']">
             {{ option[props.labelKey] }}
           </button>

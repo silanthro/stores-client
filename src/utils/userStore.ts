@@ -1,12 +1,15 @@
 import { type RemovableRef, useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { getUserRepos } from './githubApi'
+import { getUserRepos, loadToolIndex } from './githubApi'
 import { supabase } from '@/utils/supabase'
 import type { RepoMetadata } from '@/utils/types'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    username: useStorage('user', undefined) as RemovableRef<string | undefined>,
+    userId: useStorage('userId', undefined) as RemovableRef<string | undefined>,
+    username: useStorage('username', undefined) as RemovableRef<
+      string | undefined
+    >,
     oauthToken: useStorage('oauthToken', undefined) as RemovableRef<
       string | undefined
     >,
@@ -20,7 +23,7 @@ export const useUserStore = defineStore('user', {
   getters: {},
   actions: {
     async login() {
-      supabase.auth.signInWithOAuth({
+      await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
           scopes: 'public_repo',
@@ -32,6 +35,8 @@ export const useUserStore = defineStore('user', {
       this.username = undefined
       this.oauthToken = undefined
       this.oauthRefreshToken = undefined
+      this.repos = []
+      this.repoOwners = []
     },
     async listRepos() {
       if (!this.oauthToken) return
@@ -49,10 +54,12 @@ export const useUserStore = defineStore('user', {
         .insert({
           full_name: index.full_name,
           clone_url: index.clone_url,
-          branch: index.branch,
+          // branch: index.branch,
           commit: index.commit,
           description: index.description,
           readme: index.readme,
+          owner: this.userId,
+          version: index.version,
           // user: '',
         })
         .select('id')

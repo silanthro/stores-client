@@ -12,7 +12,7 @@ export const useToolsStore = defineStore('tools', {
       const fetchIndexRequest = await supabase
         .from('tool_indexes')
         .select(
-          'full_name,clone_url,description,readme,tools(name,doc,inputs,output)',
+          'full_name,owner,version,clone_url,commit,description,readme,tools(name,doc,inputs,output)',
         )
       this.tool_indexes = fetchIndexRequest.data as RepoMetadata[]
     },

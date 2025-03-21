@@ -10,6 +10,7 @@ export interface RepoMetadata {
   clone_url: string
   added_at?: Date
   pushed_at: Date
+  version?: string
   branch: string
   owner?: string
   commit?: string

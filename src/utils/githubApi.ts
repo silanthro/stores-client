@@ -107,7 +107,11 @@ export async function getBranches(repo_full_name: string, token: string) {
   }))
 }
 
-export async function loadToolIndex(clone_url: string) {
+export async function loadToolIndex(
+  clone_url: string,
+  branch: string | undefined = undefined,
+  commit: string | undefined = undefined,
+) {
   const url = import.meta.env.VITE_TOOL_PARSING_URL
   const response = await fetch(url, {
     method: 'POST',
@@ -116,6 +120,8 @@ export async function loadToolIndex(clone_url: string) {
     },
     body: JSON.stringify({
       clone_url,
+      branch,
+      commit,
     }),
   })
   const responseJSON = await response.json()
@@ -126,5 +132,6 @@ export async function loadToolIndex(clone_url: string) {
     tools: responseJSON.index.tools as ToolMetadata[],
     description: responseJSON.index.description as string,
     readme: responseJSON.readme as string,
+    commit: responseJSON.commit as string,
   }
 }
