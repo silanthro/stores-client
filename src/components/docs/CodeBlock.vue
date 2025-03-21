@@ -11,10 +11,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Prism from 'prismjs'
-import 'prismjs/components/prism-javascript'
-import 'prismjs/components/prism-typescript'
 import 'prismjs/components/prism-python'
-import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-bash'
 import 'prism-themes/themes/prism-one-light.css'
 import CopyButton from '@/components/elements/CopyButton.vue'
