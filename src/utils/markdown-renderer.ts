@@ -52,18 +52,6 @@ md.renderer.rules.fence = (tokens: Token[], idx: number): string => {
   return `\x00CODE_BLOCK\x01${encodeURIComponent(code)}\x02${lang}\x00`
 }
 
-// Helper function to escape HTML content
-function escapeHtml(html: string): string {
-  const htmlEntities: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }
-  return html.replace(/[&<>"']/g, char => htmlEntities[char])
-}
-
 // Helper function to unescape HTML entities in rendered content
 function unescapeHtml(html: string): string {
   const htmlEntities: Record<string, string> = {
