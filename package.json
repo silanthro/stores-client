@@ -10,9 +10,10 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
     "@supabase/supabase-js": "^2.49.1",
+    "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.12",
-    "@types/prismjs": "^1.26.5",
     "@vueuse/core": "^13.0.0",
     "compare-versions": "^6.1.1",
     "markdown-it": "^14.1.0",
@@ -24,10 +25,9 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@heroicons/vue": "^2.2.0",
-    "@tailwindcss/typography": "^0.5.16",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/markdown-it": "^14.1.2",
+    "@types/prismjs": "^1.26.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/runtime-core": "^3.5.13",
     "@vue/tsconfig": "^0.7.0",
