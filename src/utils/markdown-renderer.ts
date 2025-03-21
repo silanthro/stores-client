@@ -89,15 +89,12 @@ export function parseMarkdown(content: string): (string | VNode)[] {
   return result
 }
 
+const tutorials = import.meta.glob<string>('../tutorials/*.md', { query: '?raw', import: 'default' });
+
 export async function loadTutorial(id: string): Promise<string> {
-  try {
-    const response = await fetch(`/src/tutorials/${id}.md`)
-    if (!response.ok) {
-      throw new Error(`Failed to load tutorial: ${id}`)
-    }
-    return await response.text()
-  } catch (error) {
-    console.error(`Error loading tutorial ${id}:`, error)
-    return ''
+  const filePath = `../tutorials/${id}.md`;
+  if (!tutorials[filePath]) {
+    throw new Error(`Tutorial not found: ${id}`);
   }
+  return await tutorials[filePath]();
 }
