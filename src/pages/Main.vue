@@ -30,6 +30,8 @@
 <script setup lang="ts">
 import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
 import { useRouter } from 'vue-router'
+// Import with ?raw suffix
+import Test from '@/assets/test.md?raw'
 import CodeSnippet from '@/components/CodeSnippet.vue'
 import IndexCard from '@/components/IndexCard.vue'
 import { useToolsStore } from '@/utils/toolsStore'
@@ -37,4 +39,6 @@ import { useToolsStore } from '@/utils/toolsStore'
 const toolsStore = useToolsStore()
 
 const router = useRouter()
+
+console.log(Test)
 </script>
