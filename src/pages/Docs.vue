@@ -13,7 +13,7 @@
       />
     </div>
     <template v-else>
-      <div class="relative flex flex-row gap-16 flex-1 pt-8 px-24 mx-auto">
+      <div class="relative flex flex-row justify-center gap-16 flex-1 pt-8 px-24 mx-auto">
         <div class="overflow-y-auto h-[calc(100vh-90px)]">
           <div class="relative prose prose-neutral w-full max-w-3xl
             prose-h1:text-3xl! prose-h1:w-4/5
@@ -120,8 +120,6 @@ const copyFullTutorial = async (): Promise<void> => {
 }
 
 const loadTutorialContent = async (): Promise<void> => {
-  // Clear existing content first
-  tutorialContent.value = ''
   
   if (currentTutorialId.value) {
     tutorialContent.value = await loadTutorial(currentTutorialId.value)
