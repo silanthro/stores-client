@@ -15,5 +15,4 @@ export default defineConfig({
     port: 5173,
   },
   plugins: [vue(), tailwindcss()],
-  assetsInclude: ['**/*.md'],
 })
