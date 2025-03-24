@@ -25,3 +25,11 @@ export function prettifyDate(date: Date) {
 export function copy(content: string) {
   navigator.clipboard.writeText(content)
 }
+
+export function uniqBy(array: any[], key: (item: any) => string) {
+  const seen: any = {}
+  return array.filter((item) => {
+    const k = key(item)
+    return seen.hasOwnProperty(k) ? false : (seen[k] = true)
+  })
+}

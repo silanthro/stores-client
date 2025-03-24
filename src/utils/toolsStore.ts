@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { supabase } from './supabase'
+import { uniqBy } from './utils'
 import type { RepoMetadata } from '@/utils/types'
 
 export const useToolsStore = defineStore('tools', {
@@ -14,7 +15,11 @@ export const useToolsStore = defineStore('tools', {
         .select(
           'full_name,owner,version,clone_url,commit,description,readme,tools(name,doc,inputs,output)',
         )
-      this.tool_indexes = fetchIndexRequest.data as RepoMetadata[]
+      // Remove duplicates due to versioning
+      this.tool_indexes = uniqBy(
+        fetchIndexRequest.data as any[],
+        (item: any) => item.full_name,
+      ) as RepoMetadata[]
     },
   },
 })
