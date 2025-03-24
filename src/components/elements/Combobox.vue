@@ -19,7 +19,7 @@
         <ComboboxOptions static class="absolute border w-full bg-white shadow">
           <div
             v-if="filteredOptions.length === 0 && query !== ''"
-            class="relative cursor-default select-none px-4 py-2 text-gray-500">
+            class="relative cursor-default select-none px-4 py-2 text-neutral-500">
             Nothing found.
           </div>
           <ComboboxOption

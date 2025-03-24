@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col gap-24 mb-36 mx-auto">
+  <div class="max-w-[72rem] h-full flex flex-col gap-24 mb-36 mx-auto">
     <div class="flex mt-24 items-end justify-between gap-24 w-full">
       <div class="space-y-16 shrink">
         <div class="space-y-4">

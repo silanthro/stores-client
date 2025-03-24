@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AddIndex from '@/pages/AddIndex.vue'
 import Main from '@/pages/Main.vue'
 import ViewIndex from '@/pages/ViewIndex.vue'
+import Docs from '@/pages/Docs.vue'
 
 export const routes = [
   {
@@ -18,6 +19,16 @@ export const routes = [
     path: '/index/:id+',
     name: 'ViewIndex',
     component: ViewIndex,
+  },
+  {
+    path: '/docs',
+    name: 'Docs',
+    component: Docs,
+  },
+  {
+    path: '/docs/tutorials/:tutorialId',
+    name: 'Tutorial',
+    component: Docs,
   },
 ]
 
