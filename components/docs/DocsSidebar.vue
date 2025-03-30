@@ -21,14 +21,17 @@ import type { Article } from '@/utils/types/docs'
 const props = defineProps({
   heading: String,
   headingLink: String,
+  // List of nested Articles
   articles: {
     type: Array as PropType<Article[]>,
     default: [],
   },
+  // This should be a Collection referenced by the TOC markdown
   collectionName: {
     type: String,
     default: null,
   },
+  // This should be a Collection containing the TOC markdown
   collectionTOC: {
     type: String,
     default: null,

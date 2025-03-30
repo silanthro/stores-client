@@ -1,3 +1,17 @@
+/**
+ * To use this in a markdown file, include any number of code snippets
+ * in a `content-multi-code` component e.g.
+ *
+ * ::content-multi-code
+ * ```python [filename2]
+ * a = 1
+ * ```
+ * ```python [filename2]
+ * b=2
+ * ```
+ * ::
+ *
+ */
 import { h } from 'vue'
 
 export default {
