@@ -1,4 +1,7 @@
 .env
+.data
+.nuxt
+.output
 
 # Logs
 logs
