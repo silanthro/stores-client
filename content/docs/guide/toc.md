@@ -1,0 +1,13 @@
+- Index
+    - _index/what_is_an_index.md
+    - _index/pass_tools_to_llms.md
+    - _index/execute_tools.md
+    - _index/behind_the_scenes.md
+- the_tools_toml_file.md
+- Loading a remote index
+    - remote_index/remote_indexes.md
+    - remote_index/environment_variables.md
+    - remote_index/remote_indexes_in_detail.md
+- Loading a local index
+    - local_index/local_indexes.md
+    - local_index/managing_dependencies.md
