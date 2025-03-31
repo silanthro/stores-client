@@ -6,7 +6,7 @@ package: OpenAI
 
 # Use Stores with OpenAI Responses API
 
-In this tutorial, we will be creating a simple agent that can get the top posts on Hacker News. While OpenAI models can generate text, they need [additional tools](https://platform.openai.com/docs/guides/function-calling?api-mode=responses&strict-mode=enabled) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While OpenAI models can generate text, they need [additional tools](https://platform.openai.com/docs/guides/function-calling?api-mode=responses&strict-mode=enabled) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 

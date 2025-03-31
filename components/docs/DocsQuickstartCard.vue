@@ -1,6 +1,6 @@
 <template>
   <div class="block space-y-4 border p-4">
-    <NuxtLink to="/docs/tutorials" class="block">
+    <NuxtLink to="/docs/quickstarts" class="block">
       <h2>Quickstart</h2>
     </NuxtLink>
     <div>
@@ -10,14 +10,14 @@
     </div>
     <div class="flex gap-2">
       <NuxtLink
-        v-for="tutorial in tutorials"
-        :key="tutorial.id"
-        :to="`/docs/tutorials/${tutorial.id}`"
-        :title="tutorial.section"
+        v-for="quickstart in quickstarts"
+        :key="quickstart.id"
+        :to="`/docs/quickstarts/${quickstart.id}`"
+        :title="quickstart.section"
         class="p-4 bg-white border border-neutral-200 hover:border-neutral-500 transition-border">
         <img
-          :src="`/img/logos/${tutorial.logo}`"
-          :alt="`${tutorial.title} logo`"
+          :src="`/img/logos/${quickstart.logo}`"
+          :alt="`${quickstart.title} logo`"
           class="w-10 h-10 object-contain rounded" />
       </NuxtLink>
     </div>
@@ -26,12 +26,12 @@
 <script setup lang="ts">
 import { uniqBy } from '@/utils/utils'
 
-const { data: allTutorials } = await useAsyncData(() => {
-  return queryCollection('tutorials').all()
+const { data: allQuickstarts } = await useAsyncData(() => {
+  return queryCollection('quickstarts').all()
 })
-const tutorials = computed(() => {
-  if (!allTutorials.value) return []
-  return uniqBy(allTutorials.value, (t: any) => t.meta.package).map((t) => {
+const quickstarts = computed(() => {
+  if (!allQuickstarts.value) return []
+  return uniqBy(allQuickstarts.value, (t: any) => t.meta.package).map((t) => {
     return {
       id: t.stem.split('/').slice(-1)[0],
       title: (t.meta.short_title as string) || '',

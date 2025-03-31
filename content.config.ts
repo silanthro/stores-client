@@ -10,9 +10,9 @@ export default defineContentConfig({
       type: 'page',
       source: 'about.md',
     }),
-    tutorials: defineCollection({
+    quickstarts: defineCollection({
       type: 'page',
-      source: 'docs/tutorials/*.md',
+      source: 'docs/quickstarts/*.md',
       schema: z.object({
         rawbody: z.string(),
       }),

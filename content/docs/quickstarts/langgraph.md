@@ -6,7 +6,7 @@ package: LangChain
 
 # Use Stores with LangGraph Agent
 
-In this tutorial, we will be creating a simple agent that can get the top posts on Hacker News. While LangGraph agents can generate text, they need [additional tools](https://python.langchain.com/docs/tutorials/agents/#create-the-agent) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While LangGraph agents can generate text, they need [additional tools](https://python.langchain.com/docs/quickstarts/agents/#create-the-agent) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 

@@ -6,7 +6,7 @@ package: Google
 
 # Use Stores with Google Gemini API (Manual Tool Calling)
 
-In this tutorial, we will be creating a simple agent that can get the top posts on Hacker News. While Gemini models can generate text, they need [additional tools](https://ai.google.dev/gemini-api/docs/function-calling) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While Gemini models can generate text, they need [additional tools](https://ai.google.dev/gemini-api/docs/function-calling) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
