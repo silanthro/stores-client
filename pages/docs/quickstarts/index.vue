@@ -12,7 +12,7 @@
             :src="`/img/logos/${quickstart.logo}`"
             :alt="`${quickstart.title} logo`"
             class="w-6 h-6 object-contain rounded" />
-          <h3 class="text-2xl! font-semibold">
+          <h3 class="text-xl! font-semibold">
             {{ quickstart.section }} {{ quickstart.title }}
           </h3>
         </div>
@@ -26,7 +26,7 @@
 </template>
 <script setup lang="ts">
 const { data: allQuickstarts } = await useAsyncData(() => {
-  return queryCollection('quickstarts').all()
+  return queryCollection('quickstarts').order('order', 'ASC').all()
 })
 const quickstarts = computed(() => {
   if (!allQuickstarts.value) return []

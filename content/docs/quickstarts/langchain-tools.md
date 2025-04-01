@@ -2,11 +2,14 @@
 title: Use Stores with LangChain (Native Tool Calls)
 short_title: Tool Calling
 package: LangChain
+order: 7
 ---
 
 # Use Stores with LangChain (Native Tool Calls)
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While AI models can generate text, they need [additional tools](https://python.langchain.com/docs/modules/model_io/models/llms/integrations/google_genai) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While large language models can generate text, they need [additional tools](https://python.langchain.com/docs/modules/model_io/models/llms/integrations/google_genai) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -42,10 +45,11 @@ index = stores.Index(["silanthro/hackernews"])
 
 You can also load a tool index from a public GitHub repository or load your own custom tools from your repository. [Learn more about what a tool index is here](/docs/guide/_index/what_is_an_index).
 
-
 The [Hacker News API](https://github.com/HackerNews/API) doesn't require any API key. If a tool requires an API key, you can [pass it via the `env_var` parameter](/docs/guide/remote_index/environment_variables).
 
 ### 2. Bind the tools to the model
+
+Remember to add your [Gemini API key](https://aistudio.google.com/apikey) (`GOOGLE_API_KEY`) to your `.env` file.
 
 `index.tools` is a list of functions loaded in the index. This can be used directly in `model.bind_tools` because LangChain will automatically create the required function declaration JSON schema for us.
 

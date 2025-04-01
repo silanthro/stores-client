@@ -2,11 +2,14 @@
 title: Use Stores with Google Gemini API (Manual Tool Calling)
 short_title: Gemini (Manual)
 package: Google
+order: 6
 ---
 
 # Use Stores with Google Gemini API (Manual Tool Calling)
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While Gemini models can generate text, they need [additional tools](https://ai.google.dev/gemini-api/docs/function-calling) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While Gemini models can generate text, they need [additional tools](https://ai.google.dev/gemini-api/docs/function-calling) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -44,7 +47,7 @@ print(f"Tool output: {result}")
 
 ```
 
-## Steps walkthrough
+## Agent script walkthrough
 
 ### 1. Load the tools
 
@@ -74,6 +77,8 @@ config = types.GenerateContentConfig(
 ```
 
 ### 3. Call the model with the request and created config
+
+Remember to add your [Gemini API key](https://aistudio.google.com/apikey) (`GEMINI_API_KEY`) to your `.env` file.
 
 ```python{5-6}
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])

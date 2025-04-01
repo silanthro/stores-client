@@ -27,7 +27,7 @@
 import { uniqBy } from '@/utils/utils'
 
 const { data: allQuickstarts } = await useAsyncData(() => {
-  return queryCollection('quickstarts').all()
+  return queryCollection('quickstarts').order('order', 'ASC').all()
 })
 const quickstarts = computed(() => {
   if (!allQuickstarts.value) return []

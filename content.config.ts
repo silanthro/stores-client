@@ -15,6 +15,7 @@ export default defineContentConfig({
       source: 'docs/quickstarts/*.md',
       schema: z.object({
         rawbody: z.string(),
+        order: z.number(),
       }),
     }),
     guide: defineCollection({

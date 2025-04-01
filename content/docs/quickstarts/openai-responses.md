@@ -2,11 +2,14 @@
 title: Use Stores with OpenAI Responses API
 short_title: Responses
 package: OpenAI
+order: 2
 ---
 
 # Use Stores with OpenAI Responses API
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While OpenAI models can generate text, they need [additional tools](https://platform.openai.com/docs/guides/function-calling?api-mode=responses&strict-mode=enabled) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While OpenAI models can generate text, they need [additional tools](https://platform.openai.com/docs/guides/function-calling?api-mode=responses&strict-mode=enabled) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -41,7 +44,7 @@ result = index.execute(
 print(f"Tool output: {result}")
 ```
 
-## Steps walkthrough
+## Agent script walkthrough
 
 ### 1. Load the tools
 
@@ -57,9 +60,13 @@ The [Hacker News API](https://github.com/HackerNews/API) doesn't require any API
 
 ### 2. Call the model with the tools
 
+Remember to add your [OpenAI API key](https://platform.openai.com/api-keys) (`OPENAI_API_KEY`) to your `.env` file.
+
 To format the tools according to the JSON schema required by the OpenAI Responses API, we will use `index.format_tools("openai-responses")`.
 
-```python{4}
+```python{6}
+client = OpenAI()
+
 response = client.responses.create(
     model="gpt-4o-mini-2024-07-18",
     input=[{"role": "user", "content": "What are the top 10 posts on Hacker News today?"}],

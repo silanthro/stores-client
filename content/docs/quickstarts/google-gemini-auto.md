@@ -2,11 +2,14 @@
 title: Use Stores with Google Gemini API (Automatic Tool Calling)
 short_title: Gemini (Auto)
 package: Google
+order: 5
 ---
 
 # Use Stores with Google Gemini API (Automatic Tool Calling)
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While Gemini models can generate text, they need [additional tools](https://ai.google.dev/gemini-api/docs/function-calling) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While Gemini models can generate text, they need [additional tools](https://ai.google.dev/gemini-api/docs/function-calling) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -32,7 +35,7 @@ response = chat.send_message("What are the top 10 posts on Hacker News today?")
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
 
-## Steps walkthrough
+## Agent script walkthrough
 
 ### 1. Load the tools
 
@@ -47,6 +50,8 @@ You can also load a tool index from a public GitHub repository or load your own 
 The [Hacker News API](https://github.com/HackerNews/API) doesn't require any API key. If a tool requires an API key, you can [pass it via the `env_var` parameter](/docs/guide/remote_index/environment_variables).
 
 ### 2. Initialize the chat with the tools
+
+Remember to add your [Gemini API key](https://aistudio.google.com/apikey) (`GEMINI_API_KEY`) to your `.env` file.
 
 `index.tools` is a list of functions loaded in the index. This can be passed directly to the config when using Gemini's Python SDK, which will automatically create the required function declaration JSON schema for us.
 

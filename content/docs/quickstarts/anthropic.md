@@ -2,11 +2,14 @@
 title: Use Stores with Anthropic's Claude API
 short_title: Claude
 package: Anthropic
+order: 4
 ---
 
 # Use Stores with Anthropic's Claude API
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While Claude models can generate text, they need [additional tools](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While Claude models can generate text, they need [additional tools](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -36,7 +39,7 @@ result = index.execute(tool_call.name, tool_call.input)
 print(f"Tool output: {result}")
 ```
 
-## Steps walkthrough
+## Agent script walkthrough
 
 ### 1. Load the tools
 
@@ -51,6 +54,8 @@ You can also load a tool index from a public GitHub repository or load your own 
 The [Hacker News API](https://github.com/HackerNews/API) doesn't require any API key. If a tool requires an API key, you can [pass it via the `env_var` parameter](/docs/guide/remote_index/environment_variables).
 
 ### 2. Call the model with the tools
+
+Remember to add your [Anthropic API key](https://console.anthropic.com/settings/keys) (`ANTHROPIC_API_KEY`) to your `.env` file.
 
 To format the tools according to the JSON schema required by the Anthropic API, we will use `index.format_tools("anthropic")`.
 

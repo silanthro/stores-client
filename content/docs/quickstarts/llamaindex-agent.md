@@ -2,11 +2,14 @@
 title: Use Stores with LlamaIndex Agent
 short_title: Agent
 package: LlamaIndex
+order: 9
 ---
 
 # Use Stores with LlamaIndex Agent
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While LlamaIndex agents can generate text, they need [additional tools](https://docs.llamaindex.ai/en/stable/module_guides/deploying/agents/tools/) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While large language models can generate text, they need [additional tools](https://docs.llamaindex.ai/en/stable/module_guides/deploying/agents/tools/) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -33,7 +36,7 @@ response = agent.chat("What are the top 10 posts on Hacker News today?")
 print(f"Assistant response: {response}")
 ```
 
-## Steps walkthrough
+## Agent script walkthrough
 
 ### 1. Load the tools
 
@@ -49,6 +52,8 @@ The [Hacker News API](https://github.com/HackerNews/API) doesn't require any API
 
 ### 2. Initialize the agent with the tools
 
+Remember to add your [Gemini API key](https://aistudio.google.com/apikey) (`GOGGLE_API_KEY`) to your `.env` file.
+
 We will use LlamaIndex's `FunctionTool` to wrap the tools from `index.tools`.
 
 ```python{2}
@@ -56,7 +61,6 @@ llm = GoogleGenAI(model="models/gemini-2.0-flash-001")
 tools = [FunctionTool.from_defaults(fn=fn) for fn in index.tools]
 agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
 ```
-
 
 ### 3. Run the agent
 

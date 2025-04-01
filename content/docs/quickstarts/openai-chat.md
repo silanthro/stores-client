@@ -2,11 +2,14 @@
 title: Use Stores with OpenAI Chat Completions API
 short_title: Chat Completions
 package: OpenAI
+order: 1
 ---
 
 # Use Stores with OpenAI Chat Completions API
 
-In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. While OpenAI models can generate text, they need [additional tools](https://platform.openai.com/docs/guides/function-calling?api-mode=chat) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
+In this quickstart, we will be creating a simple agent that can get the top posts on Hacker News. 
+
+While OpenAI models can generate text, they need [additional tools](https://platform.openai.com/docs/guides/function-calling?api-mode=chat) to perform actions like fetching data from Hacker News. Using Stores, we will add tools for querying the Hacker News API.
 
 ## Hacker News agent
 
@@ -41,7 +44,7 @@ result = index.execute(
 print(f"Tool output: {result}")
 ```
 
-## Steps walkthrough
+## Agent script walkthrough
 
 ### 1. Load the tools
 
@@ -53,14 +56,17 @@ index = stores.Index(["silanthro/hackernews"])
 
 You can also load a tool index from a public GitHub repository or load your own custom tools from your repository. [Learn more about what a tool index is here](/docs/guide/_index/what_is_an_index).
 
-
 The [Hacker News API](https://github.com/HackerNews/API) doesn't require any API key. If a tool requires an API key, you can [pass it via the `env_var` parameter](/docs/guide/remote_index/environment_variables).
 
 ### 2. Call the model with the tools
 
+Remember to add your [OpenAI API key](https://platform.openai.com/api-keys) (`OPENAI_API_KEY`) to your `.env` file.
+
 To format the tools according to the JSON schema required by the OpenAI Chat Completions API, we will use `index.format_tools("openai-chat-completions")`.
 
-```python{6}
+```python{8}
+client = OpenAI()
+
 completion = client.chat.completions.create(
     model="gpt-4o-mini-2024-07-18",
     messages=[
