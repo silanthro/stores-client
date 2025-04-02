@@ -39,5 +39,21 @@ export default defineContentConfig({
       type: 'page',
       source: 'docs/install.md',
     }),
+    blog: defineCollection({
+      type: 'page',
+      source: 'blog/*.md',
+      schema: z.object({
+        rawbody: z.string(),
+        updatedAt: z.date(),
+      }),
+    }),
+    cookbook: defineCollection({
+      type: 'page',
+      source: 'docs/cookbook/*.md',
+      schema: z.object({
+        rawbody: z.string(),
+        updatedAt: z.date(),
+      }),
+    }),
   },
 })
