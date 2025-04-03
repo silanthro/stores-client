@@ -4,7 +4,7 @@ description: 'Build an AI agent to send emails via Gmail'
 author: 
   name: 'Alfred'
   title: 'Co-founder'
-  img: '/alfred.jpg'
+  img: '/img/alfred.jpg'
 tags: ["Email"]
 createdAt: 2025-04-03
 updatedAt: 2025-04-03

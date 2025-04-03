@@ -4,7 +4,7 @@ description: 'Build an AI agent to get, manage, and complete tasks in Todoist'
 author: 
   name: 'Alfred'
   title: 'Co-founder'
-  img: '/alfred.jpg'
+  img: '/img/alfred.jpg'
 tags: ["Productivity"]
 createdAt: 2025-04-03
 updatedAt: 2025-04-03
