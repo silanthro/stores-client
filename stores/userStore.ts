@@ -10,13 +10,7 @@ export const useUserStore = defineStore('user', {
     username: useStorage('username', undefined) as RemovableRef<
       string | undefined
     >,
-    oauthToken: useStorage('oauthToken', undefined) as RemovableRef<
-      string | undefined
-    >,
-    oauthRefreshToken: useStorage(
-      'oauthRefreshToken',
-      undefined,
-    ) as RemovableRef<string | undefined>,
+    oauthToken: undefined as string | undefined,
     repos: useStorage('repos', []) as RemovableRef<RepoMetadata[]>,
     repoOwners: useStorage('repoOwners', []) as RemovableRef<string[]>,
   }),
@@ -34,7 +28,6 @@ export const useUserStore = defineStore('user', {
       await supabase.auth.signOut()
       this.username = undefined
       this.oauthToken = undefined
-      this.oauthRefreshToken = undefined
       this.repos = []
       this.repoOwners = []
     },
