@@ -8,7 +8,7 @@
       <pre
         class="not-prose py-4 bg-[#FCFCFC] relative overflow-auto"
         :class="props.class"><slot /></pre>
-      <ElementsCopyButton class="absolute top-4 right-4" :copy="props.code" />
+      <ElementsCopyButton class="absolute top-2 right-2" :copy="props.code" />
     </div>
   </div>
 </template>
