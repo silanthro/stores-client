@@ -70,7 +70,6 @@ const recentRepos = computed(() => {
 })
 
 onMounted(async () => {
-  console.log('listing')
   await userStore.listRepos()
   loading.value = false
   selectedRepoOwner.value = { label: userStore.repoOwners[0] }

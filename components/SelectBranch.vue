@@ -192,7 +192,7 @@ async function addIndex(index: RepoMetadata) {
     addingIndex.value = true
     try {
       await userStore.addIndex(index)
-      router.push(`index/${index.full_name}`)
+      router.push(`tools/${index.full_name}`)
     } catch (e: any) {
       error.value = e.toString()
     }
@@ -200,6 +200,7 @@ async function addIndex(index: RepoMetadata) {
 }
 
 const toolsStore = useToolsStore()
+toolsStore.refresh()
 const existingIndexNotOwned = computed(() => {
   if (!index.value) return false
   return toolsStore.tool_indexes.some(
