@@ -62,6 +62,10 @@ const pages = [
     name: 'Contribute',
     link: '/docs/contribute',
   },
+  {
+    name: 'Blog',
+    link: '/blog',
+  },
 ]
 
 onMounted(() => {

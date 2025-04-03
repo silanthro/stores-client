@@ -4,6 +4,7 @@
       <DocsInstallCard />
       <DocsQuickstartCard />
       <DocsGuideCard />
+      <DocsCookBookCard />
       <DocsContributeCard />
     </div>
   </div>
