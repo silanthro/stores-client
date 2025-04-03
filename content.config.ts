@@ -22,7 +22,7 @@ export default defineContentConfig({
       type: 'page',
       source: {
         include: 'docs/guide/**/**.md',
-        exclude: ['docs/guide/contents.md'],
+        exclude: ['docs/guide/toc.md'],
       },
       schema: z.object({
         rawbody: z.string(),
