@@ -1,13 +1,13 @@
 ---
 title: 'Sending emails with an AI agent'
-description: 'Enabling your AI agent to send emails via Gmail'
+description: 'Build an AI agent to send emails via Gmail'
 author: 
   name: 'Alfred'
   title: 'Co-founder'
   img: '/alfred.jpg'
 tags: ["Email"]
-createdAt: 2025-03-31
-updatedAt: 2025-03-31
+createdAt: 2025-04-03
+updatedAt: 2025-04-03
 ---
 
 # Sending emails with an AI agent
@@ -27,7 +27,7 @@ It then sends the email and returns:
 
 ---
 
-To get started, we first set the following environment variables: 
+To get started, we first set the following environment variables in a `.env` file: 
 
 - `GMAIL_ADDRESS`: The sender's email
 - `GMAIL_PASSWORD`: The sender's [app password](https://myaccount.google.com/apppasswords), **not account password**
@@ -39,10 +39,14 @@ Now, we are ready to load the `send-gmail` tool and build our AI agent.
 Here are the scripts for the various major LLM providers and frameworks. Remember to install the required dependencies mentioned at the top of each script.
 
 ::content-multi-code
-```python {3, 9-17, 27, 32} [Anthropic]
+```python {4, 13-21, 31, 36} [Anthropic]
 import os
 import anthropic
+from dotenv import load_dotenv
 import stores
+
+# Load environment variables
+load_dotenv()
 
 # Initialize Anthropic client
 client = anthropic.Anthropic()
@@ -75,11 +79,15 @@ result = index.execute(tool_call.name, tool_call.input)
 print(f"Tool output: {result}")
 
 ```
-```python {4, 10-18, 21} [Gemini]
+```python {5, 14-22, 25} [Gemini]
 import os
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 import stores
+
+# Load environment variables
+load_dotenv()
 
 # Initialize Google Gemini client
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
@@ -105,11 +113,15 @@ response = chat.send_message(
 )
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
-```python {4, 10-18, 27, 32-35} [OpenAI]
+```python {5, 14-22, 31, 36-39} [OpenAI]
 import json
 import os
+from dotenv import load_dotenv
 from openai import OpenAI
 import stores
+
+# Load environment variables
+load_dotenv()
 
 # Initialize OpenAI client
 client = OpenAI()
@@ -143,10 +155,14 @@ result = index.execute(
 )
 print(f"Tool output: {result}")
 ```
-```python {3, 6-14, 18, 27} [LangChain]
+```python {4, 10-18, 22, 31} [LangChain]
 import os
+from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 import stores
+
+# Load environment variables
+load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
@@ -173,12 +189,16 @@ tool_call = response.tool_calls[0]
 result = index.execute(tool_call["name"], tool_call["args"])
 print(f"Tool output: {result}")
 ```
-```python {5, 8-16, 20} [LangGraph]
+```python {6, 12-20, 24} [LangGraph]
 import os
+from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.prebuilt import create_react_agent
 import stores
+
+# Load environment variables
+load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
@@ -208,12 +228,16 @@ response = agent_executor.invoke(
 )
 print(f"Assistant response: {response['messages'][-1].content}")
 ```
-```python {5, 7-16, 19, 23} [LlamaIndex]
+```python {6, 12-20, 23, 27} [LlamaIndex]
 import os
+from dotenv import load_dotenv
 from llama_index.core.agent import AgentRunner
 from llama_index.core.tools import FunctionTool
 from llama_index.llms.google_genai import GoogleGenAI
 import stores
+
+# Load environment variables
+load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
