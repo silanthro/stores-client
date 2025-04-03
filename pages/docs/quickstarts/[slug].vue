@@ -19,7 +19,7 @@ div {
 <script setup lang="ts">
 const slug = useRoute().params.slug
 const { data: post } = await useAsyncData(() => {
-  return queryCollection('tutorials').path(`/docs/tutorials/${slug}`).first()
+  return queryCollection('quickstarts').path(`/docs/quickstarts/${slug}`).first()
 })
 
 useSeoMeta({

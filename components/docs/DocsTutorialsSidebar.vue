@@ -3,7 +3,7 @@
     class="w-64 border-r border-neutral-200 h-[calc(100vh-60px)] sticky top-14">
     <nav class="py-8 px-10 overflow-y-auto h-full">
       <NuxtLink
-        to="/docs/tutorials"
+        to="/docs/quickstarts"
         class="px-2 py-1 font-semibold text-lg cursor-pointer">
         Quickstarts
       </NuxtLink>
@@ -14,16 +14,16 @@
             {{ section }}
           </li>
           <NuxtLink
-            v-for="tutorial in getTutorialsBySection(section)"
-            :key="tutorial.id"
+            v-for="quickstart in getQuickstartsBySection(section)"
+            :key="quickstart.id"
             :class="[
               'block px-5 transition-colors',
-              tutorial.id === slug
+              quickstart.id === slug
                 ? 'font-medium'
                 : 'text-neutral-500 hover:text-neutral-800',
             ]"
-            :to="`/docs/tutorials/${tutorial.id}`">
-            {{ tutorial.title }}
+            :to="`/docs/quickstarts/${quickstart.id}`">
+            {{ quickstart.title }}
           </NuxtLink>
         </template>
       </ul>
@@ -33,12 +33,12 @@
 <script setup lang="ts">
 const slug = computed(() => useRoute().params.slug)
 
-const { data: allTutorials } = await useAsyncData(() => {
-  return queryCollection('tutorials').all()
+const { data: allQuickstarts } = await useAsyncData(() => {
+  return queryCollection('quickstarts').all()
 })
-const tutorials = computed(() => {
-  if (!allTutorials.value) return []
-  return allTutorials.value.map((t) => {
+const quickstarts = computed(() => {
+  if (!allQuickstarts.value) return []
+  return allQuickstarts.value.map((t) => {
     return {
       id: t.stem.split('/').slice(-1)[0],
       title: (t.meta.short_title as string) || '',
@@ -51,9 +51,9 @@ const tutorials = computed(() => {
 })
 
 const sections = computed(() =>
-  Array.from(new Set(tutorials.value.map((t) => t.section))),
+  Array.from(new Set(quickstarts.value.map((t) => t.section))),
 )
 
-const getTutorialsBySection = (section: string) =>
-  tutorials.value.filter((t) => t.section === section)
+const getQuickstartsBySection = (section: string) =>
+  quickstarts.value.filter((t) => t.section === section)
 </script>

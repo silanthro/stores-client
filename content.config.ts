@@ -10,18 +10,19 @@ export default defineContentConfig({
       type: 'page',
       source: 'about.md',
     }),
-    tutorials: defineCollection({
+    quickstarts: defineCollection({
       type: 'page',
-      source: 'docs/tutorials/*.md',
+      source: 'docs/quickstarts/*.md',
       schema: z.object({
         rawbody: z.string(),
+        order: z.number(),
       }),
     }),
     guide: defineCollection({
       type: 'page',
       source: {
         include: 'docs/guide/**/**.md',
-        exclude: ['docs/guide/contents.md'],
+        exclude: ['docs/guide/toc.md'],
       },
       schema: z.object({
         rawbody: z.string(),
