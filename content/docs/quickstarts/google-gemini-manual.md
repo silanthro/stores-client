@@ -80,7 +80,7 @@ config = types.GenerateContentConfig(
 
 Remember to add your [Gemini API key](https://aistudio.google.com/apikey) (`GEMINI_API_KEY`) to your `.env` file.
 
-```python{5-6}
+```python
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 response = client.models.generate_content(

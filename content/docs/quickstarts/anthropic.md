@@ -76,7 +76,7 @@ response = client.messages.create(
 
 We can then parse `response.content` to retrieve the tool name and arguments.
 
-```python {9-13} [response.content]
+```python {10-13} [response.content]
 [
     TextBlock(
         citations=None,
@@ -84,12 +84,12 @@ We can then parse `response.content` to retrieve the tool name and arguments.
         type="text",
     ),
     ToolUseBlock(
-        id="a_random_tool_use_id",
-        input={
-            "num": "10",
-        },
-        name="tools-get_top_stories",
         type="tool_use",
+        id="a_random_tool_use_id",
+        name="tools-get_top_stories",
+        input={
+            "num": 10,
+        },
     ),
 ]
 ```

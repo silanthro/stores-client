@@ -78,10 +78,11 @@ response = client.responses.create(
 
 We can then parse `response.output` to retrieve the tool name and arguments.
 
-```python{2-3}[response.output[0\\]]
+```python{3-4}[response.output[0\\]]
 ResponseFunctionToolCall(
-    arguments='{"num":10}', call_id='call_lpi4KphXO08HX3TTeT2LUTDk',
+    call_id='call_lpi4KphXO08HX3TTeT2LUTDk',
     name="tools-get_top_stories",
+    arguments='{"num":10}',
     type="function_call",
     id="random_tool_call_id",
     status="completed"
