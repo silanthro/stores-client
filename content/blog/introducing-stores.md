@@ -1,64 +1,200 @@
 ---
-title: 'Introducing Stores, an open-source tools library for AI agents'
+title: Introducing Stores, a lightweight, open-source library for AI agent tools
 description: 'Give your AI agent tools in as few as three lines of code: Import, load, and pass to model'
-author: 
+author:
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
 coverImg: '/img/blog/introducing-stores/introducing-stores-cover.jpg'
-coverAlt: "Stores launch banner"
-tags: ["Product"]
+coverAlt: 'Stores launch banner'
+tags: ['Product']
 createdAt: 2025-04-07
 updatedAt: 2025-04-07
 ---
 
-Today, we are releasing Stores. 
+Today, we are releasing an early preview of Stores.
 
-It is an open-source library of pre-tested tools that you can add to your AI agents in as few as three lines of code.
+Stores is an open-source library for adding tools to your AI agents in as few as three lines of code.
 
 1. Import Stores
 2. Load the tools
 3. Pass the tools to the model
 
-Here's a sample code that adds a set of Hacker News tools to an Anthropic model:
+Here's how easy it is to add a set of Hacker News tools to various LLM models via the popular APIs and frameworks:
 
-```python {2, 6, 11} 
+::content-multi-code
+```python {3,5-6,18-19,23-24} [Anthropic]
+import os
 import anthropic
 import stores
 
-client = anthropic.Anthropic()
-
+# Load tools
 index = stores.Index(["silanthro/hackernews"])
 
+client = anthropic.Anthropic()
+
 response = client.messages.create(
-    model=model,
-    messages=messages,
+    model="claude-3-5-sonnet-20241022",
+    messages=[
+        {
+            "role": "user",
+            "content": "Find the latest posts on HackerNews",
+        }
+    ],
+    # Pass tools
     tools=index.format_tools("anthropic"),
 )
+
+tool_call = response.content[-1]
+# Execute tools
+result = index.execute(tool_call.name, tool_call.input)
 ```
+```python {3,5-6,10-11,14} [Gemini]
+from google import genai
+from google.genai import types
+import stores
 
-With Stores, you can empower your AI agents with a whole set of tools to manage your to-dos on Todoist, send emails via Gmail, research Hacker News, and much more—all without building those tools and dealing with endless edge cases yourself.
+# Load tools
+index = stores.Index(["silanthro/hackernews"])
 
-We and our community will handle all that for you.
+client = genai.Client()
+
+# Pass tools
+config = types.GenerateContentConfig(tools=index.tools)
+chat = client.chats.create(model="gemini-2.0-flash", config=config)
+
+# Tools executed automatically
+response = chat.send_message(
+    "Find the latest posts on HackerNews"
+)
+```
+```python {3,5-6,18-19,23-27} [OpenAI]
+import json
+from openai import OpenAI
+import stores
+
+# Load tools
+index = stores.Index(["silanthro/hackernews"])
+
+client = OpenAI()
+
+response = client.responses.create(
+    model="gpt-4o-mini-2024-07-18",
+    input=[
+        {
+            "role": "user",
+            "content": "Find the latest posts on HackerNews",
+        }
+    ],
+    # Pass tools
+    tools=index.format_tools("openai-responses"),
+)
+
+tool_call = response.output[0]
+# Execute tools
+result = index.execute(
+    tool_call.name,
+    json.loads(tool_call.arguments),
+)
+```
+```python {2,4-5,8-9,16-17} [LangChain]
+from langchain_google_genai import ChatGoogleGenerativeAI
+import stores
+
+# Load tools
+index = stores.Index(["silanthro/hackernews"])
+
+model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+# Pass tools
+model_with_tools = model.bind_tools(index.tools)
+
+response = model_with_tools.invoke(
+    "Find the latest posts on HackerNews"
+)
+
+tool_call = response.tool_calls[0]
+# Execute tools
+result = index.execute(tool_call["name"], tool_call["args"])
+```
+```python {4,6-7,11-12,16} [LlamaIndex]
+from llama_index.core.agent import AgentRunner
+from llama_index.core.tools import FunctionTool
+from llama_index.llms.google_genai import GoogleGenAI
+import stores
+
+# Load tools
+index = stores.Index(["silanthro/hackernews"])
+
+llm = GoogleGenAI(model="models/gemini-2.0-flash-001")
+tools = [
+    # Pass tools
+    FunctionTool.from_defaults(fn=fn) for fn in index.tools
+]
+agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
+
+# Tools executed automatically
+response = agent.chat(
+    "Find the latest posts on HackerNews"
+)
+```
+```python {4,6-7,17-18,22-26} [LiteLLM]
+import json
+import os
+from litellm import completion
+import stores
+
+# Load tools
+index = stores.Index(["silanthro/hackernews"])
+
+response = completion(
+    model="gemini/gemini-2.0-flash-001",
+    messages=[
+        {
+            "role": "user",
+            "content": "Find the latest posts on HackerNews",
+        }
+    ],
+    # Pass tools
+    tools=index.format_tools("google-gemini"),
+)
+
+tool_call = response.choices[0].message.tool_calls[0]
+# Execute tools
+result = index.execute(
+    tool_call.function.name,
+    json.loads(tool_call.function.arguments),
+)
+```
+::
+
+You can think of Stores as something like the [Python Package Index (PyPI) but for LLM tools](/blog/stores-not-mcp-more-pypi).
+
+We are launching this early preview with a small set of tools that we think agent builders will find useful. To list a few:
+
+- [Send an email via Gmail](https://github.com/silanthro/send-gmail)
+- [Get, create, and manage Todoist tasks](https://github.com/silanthro/todoist)
+- [Read, edit, and move files in specified directories](https://github.com/silanthro/filesystem)
+
+You can use these tools to build agents that [complete Todoist tasks](/docs/cookbook/complete-tasks), [send emails](/docs/cookbook/send-email), [organize files on your computer](/docs/cookbook/organize-files), and more.
+
+We will be adding more tools, so let us know what will be useful to you. It'll be awesome if you want to build and [contribute your tools](/docs/contribute) too!
 
 ---
 
 ## Why we built Stores
 
-For the past few months, my cofounder SK and I have been prototyping several AI agents. One of the most tedious parts was building the tools to extend the model's capability. We spent a lot of time building, testing, and fixing our tools. Even a tool to "simply" search on Google (without using their API) wasn't trivial.
-
 **With Stores, we want to make it super simple to build LLM Agents that use tools.**
+
+For the past few months, my cofounder SK and I have been prototyping several AI agents. One of the most tedious parts was building the tools to extend the model's capability. We spent a lot of time building, testing, and fixing our tools. Even a tool to "simply" search on Google (without using their API) wasn't trivial.
 
 There is no reason for developers to keep building tools from scratch when someone else has already built them. Imagine building a calculator yourself whenever you want to add two numbers.
 
-Instead, developers should focus on picking the relevant tools and building other parts of their AI agents, such as the memory and user interface.
+To make things worse, developers also need to build their agents' memory, orchestration layer, and user interface, which is a lot! With Stores, we are starting with tools because of the pain we felt ourselves and the lack of an open-source, light-weight solution.
 
-(In fact, we think developers might not even need to pick tools in the future. That could be handled by more powerful models or dynamic tool search.)
+We built Stores to have two main components:
 
-Stores has two main elements:
-
-1. A directory of [open-source tools](/) that anyone can use and contribute to
-2. A [Python library](https://github.com/silanthro/stores) that handles tool installation and formatting for all major LLM providers
+1. A [Python library](https://github.com/silanthro/stores) that handles tool installation and formatting for major LLM providers
+2. A directory of [open-source tools](/) that anyone can use and contribute to
 
 ## Why you might like Stores
 
@@ -72,14 +208,9 @@ So, we designed Stores with these principles in mind:
 
 ## What exactly can you do with Stores?
 
-We aim to make building LLM agents with tools as simple as possible for you. For now, Stores focuses on letting you give your agents tools and working with the major LLM providers.
+We aim to make building LLM agents with tools as simple as possible for you. For now, Stores focuses on letting you easily add tools to your agents and work with the major LLM providers.
 
-1. Give your agent tools
-2. Easily format tools for all major LLM providers
-3. Securely provide credentials if needed
-4. Execute tools with a helper function
-
-### 1. Give your agent tools
+### 1. Add tools with a few lines of code
 
 At its core, Stores make it easy to give your agents tools via an `Index`. You can add tools to an `Index` from [any of the following sources](/docs/guide/_index/what_is_an_index):
 
@@ -91,7 +222,7 @@ At its core, Stores make it easy to give your agents tools via an `Index`. You c
 ```python
 # Load tools from different sources
 index = Index([
-    "silanthro/hackernews", 
+    "silanthro/hackernews",
     "github_account/repo_name",
     "path/to/local/folder",
     foo_function,
@@ -102,15 +233,17 @@ index = Index([
 
 Annoyingly, LLM providers and frameworks require slightly different schemas for tools. You can see [the various formats here](/docs/guide/_index/pass_tools_to_llms#passing-a-schema). Even OpenAI Chat Completions and OpenAI Responses require different schemas.
 
-The `Index.format_tools` method lets you easily comply with the different schema requirements from the major LLM providers (Anthropic, OpenAI Chat Completions & Responses, and Google Gemini).
+[The `Index.format_tools` method](/docs/guide/_index/pass_tools_to_llms) lets you easily comply with the different schema requirements from the major LLM providers (Anthropic, OpenAI Chat Completions & Responses, and Google Gemini).
 
-```python {6} [anthropic_example.py]
+```python {6-8} [anthropic_example.py]
 client = anthropic.Anthropic()
 response = client.messages.create(
     model=model,
     messages=messages,
     tools=(
+        # Both are equivalent
         index.format_tools("anthropic")
+        or index.format_tools(ProviderFormat.ANTHROPIC)
     ),
 )
 ```
@@ -138,11 +271,11 @@ index = stores.Index(
 )
 ```
 
-**Note:** For now, tools are not executed in a sandbox, which is something we plan to add in the future. In the meantime, please check the code of the tools you use to ensure they do not unnecessarily access sensitive information.
+**Note:** For now, tools are not executed in a sandbox, which is something we plan to add in the future. In the meantime, please check the code of the tools you want to use to ensure they do not unnecessarily access sensitive information.
 
 ### 4. Execute tools with a helper function
 
-Finally, for LLM packages that don't execute tools automatically, you can use the `Index.execute` method to execute tools—without having to write your own helper function.
+Finally, for LLM packages that don't execute tools automatically, such as Anthropic and LiteLLM, you can use the `Index.execute` method to execute tools.
 
 ```python {10-13} [openai_example.py]
 # Call the model
@@ -160,16 +293,18 @@ result = index.execute(
 )
 ```
 
-You could write this helper function yourself, but like I said above, we want to make things as simple for you as possible.
-
-## Why not use MCP?
-
-Given its hype, you might be wondering why not use MCP instead. 
-
-It is a great question that requires much explanation, so SK wrote a detailed comparison of MCP and Stores in [this other blog post](/blog/stores-vs-mcp).
+You could write this helper function yourself but we want to make things as simple as possible for you.
 
 ## How to get started
 
-If I have convinced you to give Stores a try, you can find our documentation, quickstarts, and cookbook [here](/docs).
+If you have been annoyed by how tedious adding tools to your agents is, we would love for you to give Stores a try! 
 
-We are happy to help if you have any questions or feedback. If you can't find a suitable tool, just let us know or consider [contributing](/docs/contribute)!
+Here are some resources to help you get started:
+
+- [Documentation](/docs)
+- [Quickstarts](/docs/quickstarts)
+- [Cookbook](/docs/cookbook)
+
+We are happy to help if you have any questions or feedback. 
+
+And if you are excited by the idea behind Stores, please consider [contributing](/docs/contribute)!
