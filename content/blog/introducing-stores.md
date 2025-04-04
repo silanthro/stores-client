@@ -175,7 +175,7 @@ We are launching this early preview with a small set of tools that we think agen
 - [Get, create, and manage Todoist tasks](https://github.com/silanthro/todoist)
 - [Read, edit, and move files in specified directories](https://github.com/silanthro/filesystem)
 
-You can use these tools to build agents that [complete Todoist tasks](/docs/cookbook/complete-tasks), [send emails](/docs/cookbook/send-email), [organize files on your computer](/docs/cookbook/organize-files), and more.
+You can use these tools to build agents that [complete Todoist tasks](/docs/cookbook/complete-todoist-tasks), [send emails](/docs/cookbook/send-email), [rename files on your computer](/docs/cookbook/rename-files), and more.
 
 We will be adding more tools, so let us know what will be useful to you. It'll be awesome if you want to build and [contribute your tools](/docs/contribute) too!
 
