@@ -19,21 +19,6 @@
               {{ receipe.description }}
             </p>
           </div>
-          <div class="flex items-center gap-3 mt-4">
-            <img
-              :src="receipe.author.img"
-              :alt="receipe.author.name"
-              class="w-6 h-6 rounded-full"
-            />
-            <div>
-              <p class="text-xs text-neutral-600">
-                {{ receipe.author.name }}
-              </p>
-              <p class="text-xs text-neutral-400">
-                {{ receipe.author.title }}
-              </p>
-            </div>
-          </div>
         </NuxtLink>
       </div>
     </div>

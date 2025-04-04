@@ -24,7 +24,7 @@ export default {
           'div',
           {
             class:
-              'text-sm font-medium flex gap-4 border border-neutral-200 border-b-0',
+              'text-sm font-medium flex gap-4 border border-neutral-200 border-b-0 overflow-x-auto',
           },
           slots.default().map((slot: any, i: number) =>
             h(
