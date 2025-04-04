@@ -1,6 +1,6 @@
 ---
 title: 'Getting tasks from Todoist'
-description: 'Build an AI agent to get tasks from Todoist, create new tasks, and manage existing tasks'
+description: 'Build an AI agent that can get tasks from Todoist, create new tasks, and manage existing tasks'
 author: 
   name: 'Alfred'
   title: 'Co-founder'
@@ -42,7 +42,7 @@ Now, we are ready to load the Todoist tools and build our AI agent.
 Here are the scripts for the various major LLM providers and frameworks. Remember to install the required dependencies mentioned at the top of each script.
 
 ::content-multi-code
-```python {4, 10-17, 28, 33} [Anthropic]
+```python {4, 9-17, 27-28, 32-33} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -61,7 +61,7 @@ index = stores.Index(
     },
 )
 
-# Get the response from the model
+# Get response from the model
 client = anthropic.Anthropic()
 response = client.messages.create(
     model="claude-3-5-sonnet-20241022",
@@ -73,13 +73,13 @@ response = client.messages.create(
     tools=index.format_tools("anthropic"),
 )
 
-# Execute the tool call
 tool_call = response.content[-1]
+# Execute tool call
 result = index.execute(tool_call.name, tool_call.input)
 print(f"Tool output: {result}")
 
 ```
-```python {5, 11-18, 22} [Gemini]
+```python {5, 10-18, 22-23, 26} [Gemini]
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -99,16 +99,17 @@ index = stores.Index(
     },
 )
 
-# Initialize the chat with the model and tools
-client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+client = genai.Client()
+
+# Pass tools
 config = types.GenerateContentConfig(tools=index.tools)
 chat = client.chats.create(model="gemini-2.0-flash", config=config)
 
-# Get the response from the model. Gemini will automatically execute the tool call.
+# Tool calls executed automatically
 response = chat.send_message("What tasks are due today?")
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
-```python {5, 11-18, 28, 33-36} [OpenAI]
+```python {5, 10-18, 27-28, 32-36} [OpenAI]
 import json
 import os
 from dotenv import load_dotenv
@@ -128,7 +129,7 @@ index = stores.Index(
     },
 )
 
-# Get the response from the model
+# Get response from the model
 client = OpenAI()
 response = client.responses.create(
     model="gpt-4o-mini-2024-07-18",
@@ -139,15 +140,15 @@ response = client.responses.create(
     tools=index.format_tools("openai-responses"),
 )
 
-# Execute the tool call
 tool_call = response.output[0]
+# Execute tool call
 result = index.execute(
     tool_call.name,
     json.loads(tool_call.arguments),
 )
 print(f"Tool output: {result}")
 ```
-```python {4, 10-17, 21, 28} [LangChain]
+```python {4, 9-17, 21-22, 28-29} [LangChain]
 import os
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -166,19 +167,20 @@ index = stores.Index(
     },
 )
 
-# Initialize the model with tools
 model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+
+# Pass tools
 model_with_tools = model.bind_tools(index.tools)
 
-# Get the response from the model
+# Get response from the model
 response = model_with_tools.invoke("What tasks are due today?")
 
-# Execute the tool call
 tool_call = response.tool_calls[0]
+# Execute tool call
 result = index.execute(tool_call["name"], tool_call["args"])
 print(f"Tool output: {result}")
 ```
-```python {6, 12-19, 23} [LangGraph]
+```python {6, 11-19, 23-24, 26} [LangGraph]
 import os
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
@@ -199,12 +201,12 @@ index = stores.Index(
     },
 )
 
-# Initialize the LangGraph agent with the tools
 agent_model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+
+# Pass tools
 agent_executor = create_react_agent(agent_model, index.tools)
 
-# Get the response from the agent. The LangGraph agent will automatically
-# execute the tool call.
+# Tool calls executed automatically
 response = agent_executor.invoke(
     {
         "messages": [HumanMessage(content="What tasks are due today?")]
@@ -212,7 +214,7 @@ response = agent_executor.invoke(
 )
 print(f"Assistant response: {response['messages'][-1].content}")
 ```
-```python {6, 12-19, 22, 26} [LlamaIndex]
+```python {6, 11-19, 21-22, 26-27, 29} [LlamaIndex]
 import os
 from dotenv import load_dotenv
 from llama_index.core.agent import AgentRunner
@@ -236,16 +238,16 @@ index = stores.Index(
 # Wrap tools with LlamaIndex FunctionTool
 tools = [FunctionTool.from_defaults(fn=fn) for fn in index.tools]
 
-# Initialize the LlamaIndex agent with tools
 llm = GoogleGenAI(model="models/gemini-2.0-flash-001")
+
+# Pass tools
 agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
 
-# Get the response from the LlamaIndex agent. The LlamaIndex agent will
-# automatically execute the tool call.
+# Tool calls executed automatically
 response = agent.chat("What tasks are due today?")
 print(f"Assistant response: {response}")
 ```
-```python {4,7-14, 23, 28-31} [LiteLLM]
+```python {4, 6-14, 22-23, 27-31} [LiteLLM]
 import json
 import os
 from litellm import completion
@@ -261,7 +263,7 @@ index = stores.Index(
     },
 )
 
-# Get the response from the model
+# Get response from the model
 response = completion(
     model="gemini/gemini-2.0-flash-001",
     messages=[
@@ -271,8 +273,8 @@ response = completion(
     tools=index.format_tools("google-gemini"),
 )
 
-# Execute the tool call
 tool_call = response.choices[0].message.tool_calls[0]
+# Execute tool call
 result = index.execute(
     tool_call.function.name,
     json.loads(tool_call.function.arguments),

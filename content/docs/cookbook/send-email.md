@@ -1,6 +1,6 @@
 ---
 title: 'Sending emails with an AI agent'
-description: 'Build an AI agent to send emails via Gmail'
+description: 'Build an AI agent that can send emails via Gmail'
 author: 
   name: 'Alfred'
   title: 'Co-founder'
@@ -39,7 +39,7 @@ Now, we are ready to load the `send-gmail` tool and build our AI agent.
 Here are the scripts for the various major LLM providers and frameworks. Remember to install the required dependencies mentioned at the top of each script.
 
 ::content-multi-code
-```python {4, 13-21, 31, 36} [Anthropic]
+```python {4, 9-18, 28-29, 33-34} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -47,9 +47,6 @@ import stores
 
 # Load environment variables
 load_dotenv()
-
-# Initialize Anthropic client
-client = anthropic.Anthropic()
 
 # Load tools and set the required environment variables
 index = stores.Index(
@@ -62,7 +59,8 @@ index = stores.Index(
     },
 )
 
-# Get the response from the model
+# Get response from the model
+client = anthropic.Anthropic()
 response = client.messages.create(
     model="claude-3-5-sonnet-20241022",
     max_tokens=1024,
@@ -73,13 +71,13 @@ response = client.messages.create(
     tools=index.format_tools("anthropic"),
 )
 
-# Execute the tool call
 tool_call = response.content[-1]
+# Execute tool call
 result = index.execute(tool_call.name, tool_call.input)
 print(f"Tool output: {result}")
 
 ```
-```python {5, 14-22, 25} [Gemini]
+```python {5, 10-19, 23-24, 27} [Gemini]
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -89,9 +87,6 @@ import stores
 # Load environment variables
 load_dotenv()
 
-# Initialize Google Gemini client
-client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-
 # Load tools and set the required environment variables
 index = stores.Index(
     ["silanthro/send-gmail"],
@@ -103,17 +98,19 @@ index = stores.Index(
     },
 )
 
-# Initialize the chat with the model and tools
+client = genai.Client()
+
+# Pass tools
 config = types.GenerateContentConfig(tools=index.tools)
 chat = client.chats.create(model="gemini-2.0-flash", config=config)
 
-# Get the response from the model. Gemini will automatically execute the tool call.
+# Tool calls executed automatically
 response = chat.send_message(
     "Send a haiku about dreams to email@example.com. Don't ask questions."
 )
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
-```python {5, 14-22, 31, 36-39} [OpenAI]
+```python {5, 10-19, 28-29, 33-37} [OpenAI]
 import json
 import os
 from dotenv import load_dotenv
@@ -123,9 +120,6 @@ import stores
 # Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
-client = OpenAI()
-
 # Load tools and set the required environment variables
 index = stores.Index(
     ["silanthro/send-gmail"],
@@ -137,7 +131,8 @@ index = stores.Index(
     },
 )
 
-# Get the response from the model
+# Get response from the model
+client = OpenAI()
 response = client.responses.create(
     model="gpt-4o-mini-2024-07-18",
     input=[
@@ -147,15 +142,15 @@ response = client.responses.create(
     tools=index.format_tools("openai-responses"),
 )
 
-# Execute the tool call
 tool_call = response.output[0]
+# Execute tool call
 result = index.execute(
     tool_call.name,
     json.loads(tool_call.arguments),
 )
 print(f"Tool output: {result}")
 ```
-```python {4, 10-18, 22, 31} [LangChain]
+```python {4, 9-18, 22-23, 31-32} [LangChain]
 import os
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -175,21 +170,22 @@ index = stores.Index(
     },
 )
 
-# Initialize the model with tools
 model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+
+# Pass tools
 model_with_tools = model.bind_tools(index.tools)
 
-# Get the response from the model
+# Get response from the model
 response = model_with_tools.invoke(
     "Send a haiku about dreams to email@example.com. Don't ask questions."
 )
 
-# Execute the tool call
 tool_call = response.tool_calls[0]
+# Execute tool call
 result = index.execute(tool_call["name"], tool_call["args"])
 print(f"Tool output: {result}")
 ```
-```python {6, 12-20, 24} [LangGraph]
+```python {6, 11-20, 24-25, 27} [LangGraph]
 import os
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
@@ -211,12 +207,12 @@ index = stores.Index(
     },
 )
 
-# Initialize the LangGraph agent with the tools
 agent_model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+
+# Pass tools
 agent_executor = create_react_agent(agent_model, index.tools)
 
-# Get the response from the agent. The LangGraph agent will automatically
-# execute the tool call.
+# Tool calls executed automatically
 response = agent_executor.invoke(
     {
         "messages": [
@@ -228,7 +224,7 @@ response = agent_executor.invoke(
 )
 print(f"Assistant response: {response['messages'][-1].content}")
 ```
-```python {6, 12-20, 23, 27} [LlamaIndex]
+```python {6, 11-20, 22-23, 27-28, 30} [LlamaIndex]
 import os
 from dotenv import load_dotenv
 from llama_index.core.agent import AgentRunner
@@ -253,18 +249,18 @@ index = stores.Index(
 # Wrap tools with LlamaIndex FunctionTool
 tools = [FunctionTool.from_defaults(fn=fn) for fn in index.tools]
 
-# Initialize the LlamaIndex agent with tools
 llm = GoogleGenAI(model="models/gemini-2.0-flash-001")
+
+# Pass tools
 agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
 
-# Get the response from the LlamaIndex agent. The LlamaIndex agent will
-# automatically execute the tool call.
+# Tool calls executed automatically
 response = agent.chat(
     "Send a haiku about dreams to email@example.com. Don't ask questions."
 )
 print(f"Assistant response: {response}")
 ```
-```python {4,7-15, 27, 32-35} [LiteLLM]
+```python {4, 6-15, 26-27, 31-35} [LiteLLM]
 import json
 import os
 from litellm import completion
@@ -281,7 +277,7 @@ index = stores.Index(
     },
 )
 
-# Get the response from the model
+# Get response from the model
 response = completion(
     model="gemini/gemini-2.0-flash-001",
     messages=[
@@ -294,8 +290,8 @@ response = completion(
     tools=index.format_tools("google-gemini"),
 )
 
-# Execute the tool call
 tool_call = response.choices[0].message.tool_calls[0]
+# Execute tool call
 result = index.execute(
     tool_call.function.name,
     json.loads(tool_call.function.arguments),

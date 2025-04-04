@@ -61,7 +61,7 @@ Now, we are ready to load the `filesystem` tool index and build our AI agent.
 Here are the scripts for the various major LLM providers and frameworks. Remember to install the required dependencies mentioned at the top of each script.
 
 ::content-multi-code
-```python {4, 10-17, 37, 48-51, 61} [Anthropic]
+```python {4, 9-17, 36-37, 48-51, 59-61} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -92,7 +92,7 @@ messages = [
 # Define agent loop
 def run_agent_loop():
     while True:
-        # Get the response from the model
+        # Get response from the model
         response = client.messages.create(
             model="claude-3-5-sonnet-20241022",
             max_tokens=1024,
@@ -154,7 +154,7 @@ def run_agent_loop():
 # Run the agent loop
 run_agent_loop()
 ```
-```python {5, 11-18, 22} [Gemini]
+```python {5, 10-18, 22-23, 26} [Gemini]
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -174,18 +174,19 @@ index = stores.Index(
     },
 )
 
-# Initialize the chat with the model and tools
-client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+client = genai.Client()
+
+# Pass tools
 config = types.GenerateContentConfig(tools=index.tools)
 chat = client.chats.create(model="gemini-2.0-flash", config=config)
 
-# Get the response from the model. Gemini will automatically execute the tool call.
+# Tool calls executed automatically
 response = chat.send_message(
     "Rename the files in the '/Users/username/Documents/folder' directory according to its content. Use tools when necessary."
 )
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
-```python {5, 11-18, 36, 55} [OpenAI]
+```python {5, 10-18, 35-36, 53-55} [OpenAI]
 import json
 import os
 from dotenv import load_dotenv
@@ -216,7 +217,7 @@ messages = [
 
 # Run agent loop
 while True:
-    # Get the response from the model
+    # Get response from the model
     response = client.responses.create(
         model="gpt-4o-mini-2024-07-18",
         input=messages,
@@ -253,7 +254,7 @@ while True:
                 }
             )  # Append the tool call result as context
 ```
-```python {5, 11-18, 22, 54} [LangChain]
+```python {5, 10-18, 22-23, 54-56} [LangChain]
 import os
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -273,9 +274,11 @@ index = stores.Index(
     },
 )
 
-# Initialize the model with tools
 model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+
+# Pass tools
 model_with_tools = model.bind_tools(index.tools)
+
 messages = [
     HumanMessage(
         content="Rename the files in the '/Users/username/Documents/folder' directory according to their content"
@@ -284,7 +287,7 @@ messages = [
 
 # Run the agent loop
 while True:
-    # Get the response from the model
+    # Get response from the model
     response = model_with_tools.invoke(messages)
 
     text = response.content
@@ -314,7 +317,7 @@ while True:
             )  # Append the tool call result as context
 
 ```
-```python {6, 12-19, 23} [LangGraph]
+```python {6, 11-19, 23-24, 26} [LangGraph]
 import os
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
@@ -335,12 +338,12 @@ index = stores.Index(
     },
 )
 
-# Initialize the LangGraph agent with the tools
 agent_model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
+
+# Pass tools
 agent_executor = create_react_agent(agent_model, index.tools)
 
-# Get the response from the agent. The LangGraph agent will automatically
-# execute the tool call.
+# Tool calls executed automatically
 response = agent_executor.invoke(
     {
         "messages": [
@@ -352,7 +355,7 @@ response = agent_executor.invoke(
 )
 print(f"Assistant response: {response['messages'][-1].content}")
 ```
-```python {6, 12-19, 22, 26} [LlamaIndex]
+```python {6, 11-19, 21-22, 26-27, 29} [LlamaIndex]
 import os
 from dotenv import load_dotenv
 from llama_index.core.agent import AgentRunner
@@ -376,18 +379,18 @@ index = stores.Index(
 # Wrap tools with LlamaIndex FunctionTool
 tools = [FunctionTool.from_defaults(fn=fn) for fn in index.tools]
 
-# Initialize the LlamaIndex agent with tools
 llm = GoogleGenAI(model="models/gemini-2.0-flash-001")
+
+# Pass tools
 agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
 
-# Get the response from the LlamaIndex agent. The LlamaIndex agent will
-# automatically execute the tool call.
+# Tool calls executed automatically
 response = agent.chat(
     "Rename the files in the '/Users/username/Documents/folder' directory according to their content. Use tools when necessary."
 )
 print(f"Assistant response: {response}")
 ```
-``` python {4, 7-14, 31, 53} [LiteLLM]
+``` python {4, 6-14, 30-31, 51-53} [LiteLLM]
 import json
 import os
 from litellm import completion
@@ -413,7 +416,7 @@ messages = [
 
 # Run the agent loop
 while True:
-    # Get the response from the model
+    # Get response from the model
     response = completion(
         model="gemini/gemini-2.0-flash-001",
         messages=messages,
