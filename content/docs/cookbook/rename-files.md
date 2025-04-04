@@ -1,11 +1,11 @@
 ---
 title: 'Rename file'
 description: 'Build an AI agent that can find, read, write, and edit files on your computer'
-author: 
+author:
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
-tags: ["File organization"]
+tags: ['File organization']
 createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---
@@ -33,9 +33,9 @@ For this demo, we will show how to rename files in a folder with the help of an 
 
 The AI agent will list the files in the folder, read the content of the files, and then rename them accordingly.
 
-I have a `test` folder with a `doc.md` file. It contains an itinerary for Perth. I'm too lazy to rename it myself, so I'll ask the AI agent to help me. 
+I have a `test` folder with a `doc.md` file. It contains an itinerary for Perth. I'm too lazy to rename it myself, so I'll ask the AI agent to help me.
 
-``` markdown
+```markdown
 # 5-Day Itinerary for Perth, Australia
 
 1. **Day 1**: Visit Kings Park and Botanic Garden
@@ -49,19 +49,19 @@ This itinerary offers a perfect blend of nature, culture, and leisure activities
 
 ## Setup
 
-To get started, we first set the following environment variables in a `.env` file: 
+To get started, we first set the following environment variables in a `.env` file:
 
 - `ALLOWED_DIR`: The directory that we allow the AI agent to access (e.g. `/Users/username/Documents/folder`)
 - `<COMPANY>_API_KEY`: The API key of the model you want to use
 
-Now, we are ready to load the `filesystem` tool index and build our AI agent. 
+Now, we are ready to load the `filesystem` tool index and build our AI agent.
 
 ## Scripts
 
 Here are the scripts for the various major LLM providers and frameworks. Remember to install the required dependencies mentioned at the top of each script.
 
 ::content-multi-code
-```python {4, 9-17, 36-37, 48-51, 59-61} [Anthropic]
+```python {4, 9-17, 36-37, 55-57} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -109,10 +109,6 @@ def run_agent_loop():
 
         # Otherwise, process the response, which could include both text and tool use
         for block in blocks:
-            # If the REPLY tool is called, break the loop and return the message
-            if block.type == "tool_use" and block.name == "REPLY":
-                print(f"Assistant response: {block.input['msg']}\n")
-                return  # End the entire agent loop
             if block.type == "text" and block.text:
                 print(f"Assistant response: {block.text}\n")
                 messages.append({"role": "assistant", "content": block.text})
@@ -390,7 +386,7 @@ response = agent.chat(
 )
 print(f"Assistant response: {response}")
 ```
-``` python {4, 6-14, 30-31, 51-53} [LiteLLM]
+```python {4, 6-14, 30-31, 51-53} [LiteLLM]
 import json
 import os
 from litellm import completion

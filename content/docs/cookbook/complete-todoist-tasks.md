@@ -1,11 +1,11 @@
 ---
 title: 'Complete tasks with Todoist'
 description: 'Build an AI agent that can get tasks from Todoist and complete them'
-author: 
+author:
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
-tags: ["Productivity"]
+tags: ['Productivity']
 createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---
@@ -24,7 +24,7 @@ In this simple example, our AI agent has the following tools:
 
 For this demo, we will show how to build an AI agent that can get tasks from Todoist, complete them, and close them in Todoist.
 
-In my Todoist, I have a simple demo task, "Email email@example.com the top 3 HN posts". 
+In my Todoist, I have a simple demo task, "Email email@example.com the top 3 HN posts".
 
 Our AI agent will:
 
@@ -37,7 +37,7 @@ For a simpler demo for Todoist, check out [Getting tasks from Todoist](/docs/coo
 
 ## Setup
 
-To get started, we first set the following environment variables: 
+To get started, we first set the following environment variables:
 
 - `TODOIST_API_TOKEN`: The API key of the Todoist account you want to use
 - `GMAIL_ADDRESS`: The sender's email
@@ -46,13 +46,12 @@ To get started, we first set the following environment variables:
 
 The Hacker News tools do not require an API key.
 
-## Scripts 
+## Scripts
 
 Some APIs and frameworks (e.g. Gemini, LangGraph, and LlamaIndex agent) automatically execute tool calls, which make the code much simpler. For the rest, we will need to add a `while` loop so that the agent will keep working on the next step until the task is completed.
 
 ::content-multi-code
-
-```python {4, 9-21, 40-41, 52-55, 63-65} [Anthropic]
+```python {4, 9-21, 40-41, 59-62} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -104,10 +103,6 @@ def run_agent_loop():
 
         # Otherwise, process the response, which could include both text and tool use
         for block in blocks:
-            # If the REPLY tool is called, break the loop and return the message
-            if block.type == "tool_use" and block.name == "REPLY":
-                print(f"Assistant response: {block.input['msg']}\n")
-                return  # End the entire agent loop
             if block.type == "text" and block.text:
                 print(f"Assistant response: {block.text}\n")
                 messages.append({"role": "assistant", "content": block.text})
@@ -402,7 +397,7 @@ response = agent.chat(
 )
 print(f"Assistant response: {response}")
 ```
-``` python {4, 6-18, 34-35, 55-57} [LiteLLM]
+```python {4, 6-18, 34-35, 55-57} [LiteLLM]
 import json
 import os
 from litellm import completion
