@@ -1,5 +1,5 @@
 ---
-title: 'Getting things done with an AI agent'
+title: 'Complete tasks with Todoist'
 description: 'Build an AI agent that can get tasks from Todoist and complete them'
 author: 
   name: 'Alfred'

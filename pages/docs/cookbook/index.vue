@@ -1,26 +1,24 @@
 <template>
   <div class="max-w-6xl mx-auto p-8 h-full overflow-auto">
     <h1 class="text-3xl! mb-8">Cookbook</h1>
-    <div class="grid grid-cols-1 gap-8">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <NuxtLink
-          v-for="receipe in receipes"
-          :key="receipe.id"
-          :to="`/docs/cookbook/${receipe.id}`"
-          class="flex flex-col justify-between gap-2 p-6 text-left bg-white border border-neutral-200 rounded-lg hover:border-neutral-500 hover:shadow-md transition-all">
-          <div class="flex flex-col gap-2 mb-2">
-            <span class="text-xs text-neutral-400">
-              {{ receipe.tags[0] }}
-            </span>
-            <h3 class="text-xl! font-semibold">
-              {{ receipe.title }}
-            </h3>
-            <p class="text-sm text-neutral-600 line-clamp-2">
-              {{ receipe.description }}
-            </p>
-          </div>
-        </NuxtLink>
-      </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <NuxtLink
+        v-for="receipe in receipes"
+        :key="receipe.id"
+        :to="`/docs/cookbook/${receipe.id}`"
+        class="flex flex-col justify-between gap-2 p-6 text-left bg-white border border-neutral-200 hover:border-neutral-500 hover:shadow-md transition-all">
+        <div class="flex flex-col gap-2">
+          <span class="text-xs text-neutral-400">
+            {{ receipe.tags[0] }}
+          </span>
+          <h3 class="text-xl! font-semibold">
+            {{ receipe.title }}
+          </h3>
+          <p class="text-sm text-neutral-600 line-clamp-2">
+            {{ receipe.description }}
+          </p>
+        </div>
+      </NuxtLink>
     </div>
   </div>
 </template>

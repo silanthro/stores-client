@@ -34,7 +34,14 @@ export default defineContentConfig({
     }),
     contribute: defineCollection({
       type: 'page',
-      source: 'docs/contribute/*.md',
+      source: {
+        include: 'docs/contribute/*.md',
+        exclude: ['docs/contribute/toc.md'],
+      },
+    }),
+    contributeTOC: defineCollection({
+      type: 'page',
+      source: 'docs/contribute/toc.md',
     }),
     install: defineCollection({
       type: 'page',
@@ -50,11 +57,18 @@ export default defineContentConfig({
     }),
     cookbook: defineCollection({
       type: 'page',
-      source: 'docs/cookbook/*.md',
+      source: {
+        include: 'docs/cookbook/*.md',
+        exclude: ['docs/cookbook/toc.md'],
+      },
       schema: z.object({
         rawbody: z.string(),
         updatedAt: z.date(),
       }),
+    }),
+    cookbookTOC: defineCollection({
+      type: 'page',
+      source: 'docs/cookbook/toc.md',
     }),
   },
 })

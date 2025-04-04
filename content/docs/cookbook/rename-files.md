@@ -1,11 +1,11 @@
 ---
-title: 'Renaming files with AI'
+title: 'Rename file'
 description: 'Build an AI agent that can find, read, write, and edit files on your computer'
 author: 
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
-tags: ["Productivity"]
+tags: ["File organization"]
 createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---

@@ -1,5 +1,5 @@
 ---
-title: 'Getting tasks from Todoist'
+title: 'Get tasks from Todoist'
 description: 'Build an AI agent that can get tasks from Todoist, create new tasks, and manage existing tasks'
 author: 
   name: 'Alfred'

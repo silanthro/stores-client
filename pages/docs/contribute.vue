@@ -3,6 +3,8 @@
     <DocsSidebar
       heading="Contribute"
       heading-link="/docs/contribute"
+      collection-name="contribute"
+      collectionTOC="contributeTOC"
       :articles="articles" />
     <div class="grow">
       <NuxtPage />
