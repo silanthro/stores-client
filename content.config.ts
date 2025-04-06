@@ -38,6 +38,10 @@ export default defineContentConfig({
         include: 'docs/contribute/*.md',
         exclude: ['docs/contribute/toc.md'],
       },
+      schema: z.object({
+        rawbody: z.string(),
+        updatedAt: z.date(),
+      }),
     }),
     contributeTOC: defineCollection({
       type: 'page',
