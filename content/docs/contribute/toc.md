@@ -1,1 +1,1 @@
-- Contribute a tool index
+- index.md
