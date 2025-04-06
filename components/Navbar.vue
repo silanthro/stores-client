@@ -1,7 +1,7 @@
 <template>
   <div
     class="z-10 w-full bg-white flex justify-between items-center py-2 px-10 border-b border-neutral-200">
-    <NuxtLink to="/" class="px-2 font-semibold text-xl font-display">
+    <NuxtLink to="/" class="font-semibold text-xl font-display">
       Stores
     </NuxtLink>
     <div class="flex items-center">

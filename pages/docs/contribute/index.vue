@@ -8,6 +8,7 @@
         :value="post"
         class="post-content space-y-4" />
     </div>
+    <DocsPageTOC :toc="post.body.toc" />
   </div>
 </template>
 <script setup lang="ts">

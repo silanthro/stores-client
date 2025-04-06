@@ -1,9 +1,9 @@
 <template>
   <div class="flex h-full">
-    <DocsSidebar
+    <!-- <DocsSidebar
       heading="Contribute"
       heading-link="/docs/contribute"
-      :articles="articles" />
+      :articles="articles" /> -->
     <div class="grow">
       <NuxtPage />
     </div>

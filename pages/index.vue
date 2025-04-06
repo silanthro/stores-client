@@ -2,7 +2,7 @@
   <div class="h-screen overflow-hidden flex flex-col">
     <Navbar />
     <div class="overflow-auto">
-      <div class="max-w-[72rem] h-full flex flex-col gap-24 mb-72 mx-auto">
+      <div class="max-w-[72rem] h-full flex flex-col gap-24 mb-[30rem] mx-auto">
         <div class="flex mt-24 items-end justify-between gap-24 w-full">
           <div class="space-y-16 shrink">
             <div class="space-y-4">
@@ -11,13 +11,13 @@
                 A public repository of tools for LLM agents
               </div>
             </div>
-            <div class="flex flex-col max-w-[30rem]">
+            <!-- <div class="flex flex-col max-w-[30rem]">
               <div
                 class="px-3 py-2 text-lg bg-neutral-100 flex items-center gap-2">
                 <MagnifyingGlassIcon class="w-4 h-4 text-neutral-500" />
                 <input type="text" placeholder="Plot a graph" />
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="grow max-w-[40rem] shrink-0">
             <CodeSnippet />
@@ -34,7 +34,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
+// import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
 
 const toolsStore = useToolsStore()
 toolsStore.refresh()
