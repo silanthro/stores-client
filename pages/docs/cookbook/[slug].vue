@@ -10,7 +10,7 @@
     </div>
     <DocsPageTOC :toc="recipe.body.toc" />
   </div>
-</template>  
+</template>
 
 <script setup lang="ts">
 const slug = useRoute().params.slug

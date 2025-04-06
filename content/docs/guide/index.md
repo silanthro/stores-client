@@ -13,7 +13,7 @@ Stores is designed with several principles in mind:
 - **Isolation**: Tools are isolated in their own virtual environments. This makes it trivial to manage tools with conflicting dependencies and prevents unnecessary access to sensitive environment variables.
 - **Framework compatibility**: In order to pass information about tools, LLM providers often require different formats that can make it cumbersome to switch between providers. Stores makes it easy to output the required formats across providers.
 
-## Usage
+## Install
 
 ```sh
 pip install stores
@@ -24,6 +24,8 @@ Or if you are using `uv`:
 ```sh
 uv add stores
 ```
+
+## Usage
 
 Then load one of the available indexes for your LLM or Agent application.
 

@@ -22,10 +22,10 @@
         <div v-else class="text-neutral-400">No README found</div>
       </div>
       <div v-else-if="selectedTab === 'Tools'" class="flex flex-col gap-6">
-        <div class="flex items-center gap-2 border border-neutral-300 p-2">
+        <!-- <div class="flex items-center gap-2 border border-neutral-300 p-2">
           <MagnifyingGlassIcon class="w-4 h-4 text-neutral-400" />
           <input type="text" placeholder="Search tools" />
-        </div>
+        </div> -->
         <div
           v-for="tool in props.index.tools"
           class="border border-neutral-300 p-6">
@@ -36,7 +36,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
+// import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
 import {
   BookOpenIcon,
   BuildingLibraryIcon,
@@ -61,14 +61,14 @@ const tabs = [
     name: 'Tools',
     icon: WrenchIcon,
   },
-  {
-    name: 'License',
-    icon: BuildingLibraryIcon,
-  },
-  {
-    name: 'Quickstart',
-    icon: CodeBracketIcon,
-  },
+  // {
+  //   name: 'License',
+  //   icon: BuildingLibraryIcon,
+  // },
+  // {
+  //   name: 'Quickstart',
+  //   icon: CodeBracketIcon,
+  // },
 ]
 const selectedTab = ref('README')
 </script>
