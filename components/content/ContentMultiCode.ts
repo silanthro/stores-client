@@ -24,14 +24,14 @@ export default {
           'div',
           {
             class:
-              'text-sm font-medium flex gap-4 border border-neutral-200 border-b-0 overflow-x-auto',
+              'text-sm font-medium flex gap-4 border border-neutral-200 border-b-0 overflow-auto',
           },
           slots.default().map((slot: any, i: number) =>
             h(
               'button',
               {
                 class:
-                  'px-4 py-2.5 display-block h-full border-b' +
+                  'px-4 py-2.5 display-block h-full border-b whitespace-nowrap' +
                   (selected.value === i
                     ? ' border-black'
                     : 'border-transparent text-neutral-500'),
