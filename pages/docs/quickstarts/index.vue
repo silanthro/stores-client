@@ -6,7 +6,7 @@
         v-for="quickstart in quickstarts"
         :key="quickstart.id"
         :to="`/docs/quickstarts/${quickstart.id}`"
-        class="p-6 text-left bg-white border border-neutral-200 rounded-lg hover:border-neutral-500 hover:shadow-md transition-all">
+        class="p-6 text-left bg-white border border-neutral-200 hover:border-neutral-500 hover:shadow-md transition-all">
         <div class="flex items-center gap-3 mb-2">
           <img
             :src="`/img/logos/${quickstart.logo}`"
