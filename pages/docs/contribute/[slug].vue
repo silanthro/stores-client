@@ -11,19 +11,8 @@
     <DocsPageTOC :toc="post.body.toc" />
   </div>
 </template>
-<style scoped>
-div {
-  scroll-behavior: smooth;
-}
-</style>
 <script setup lang="ts">
-const slug = useRoute().params.slug
 const { data: post } = await useAsyncData(() => {
-  return queryCollection('tutorials').path(`/docs/tutorials/${slug}`).first()
-})
-
-useSeoMeta({
-  title: post.value?.title,
-  description: post.value?.description,
+  return queryCollection('contribute').first()
 })
 </script>

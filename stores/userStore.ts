@@ -10,13 +10,7 @@ export const useUserStore = defineStore('user', {
     username: useStorage('username', undefined) as RemovableRef<
       string | undefined
     >,
-    oauthToken: useStorage('oauthToken', undefined) as RemovableRef<
-      string | undefined
-    >,
-    oauthRefreshToken: useStorage(
-      'oauthRefreshToken',
-      undefined,
-    ) as RemovableRef<string | undefined>,
+    oauthToken: undefined as string | undefined,
     repos: useStorage('repos', []) as RemovableRef<RepoMetadata[]>,
     repoOwners: useStorage('repoOwners', []) as RemovableRef<string[]>,
   }),
@@ -34,7 +28,6 @@ export const useUserStore = defineStore('user', {
       await supabase.auth.signOut()
       this.username = undefined
       this.oauthToken = undefined
-      this.oauthRefreshToken = undefined
       this.repos = []
       this.repoOwners = []
     },
@@ -46,7 +39,6 @@ export const useUserStore = defineStore('user', {
         this.repoOwners = this.repoOwners.filter((o) => o != this.username)
         this.repoOwners.unshift(this.username as string)
       }
-      console.log(this.repos)
     },
     async addIndex(index: RepoMetadata) {
       // TODO: Handle error
@@ -55,13 +47,11 @@ export const useUserStore = defineStore('user', {
         .insert({
           full_name: index.full_name,
           clone_url: index.clone_url,
-          // branch: index.branch,
           commit: index.commit,
           description: index.description,
           readme: index.readme,
           owner: this.userId,
           version: index.version,
-          // user: '',
         })
         .select('id')
         .single()
@@ -74,7 +64,7 @@ export const useUserStore = defineStore('user', {
             doc: t.doc,
             inputs: t.inputs,
             output: t.output,
-            // user: '',
+            owner: this.userId,
           })),
         )
       } else {

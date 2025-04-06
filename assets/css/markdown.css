@@ -1,5 +1,6 @@
 .markdown-container {
   --spacing: 0.25rem;
+  font-size: var(--text-base);
 
   & > :not(:last-child) {
     margin-block-end: calc(var(--spacing) * 4);
@@ -20,9 +21,18 @@
     }
   }
 
+  ol {
+    list-style-type: decimal;
+    margin-left: calc(var(--spacing) * 5.5);
+  }
+
   a {
     text-decoration: underline;
     color: #075985;
+  }
+
+  strong {
+    font-weight: 600;
   }
 
   h1, h2 {

@@ -1,7 +1,7 @@
 <template>
   <button @click="copyHelper">
     <DocumentDuplicateIcon
-      class="w-6 h-6 transition"
+      class="w-5 h-5 transition"
       :class="[copied ? 'text-black' : 'text-neutral-400']" />
   </button>
 </template>

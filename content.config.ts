@@ -10,18 +10,19 @@ export default defineContentConfig({
       type: 'page',
       source: 'about.md',
     }),
-    tutorials: defineCollection({
+    quickstarts: defineCollection({
       type: 'page',
-      source: 'docs/tutorials/*.md',
+      source: 'docs/quickstarts/*.md',
       schema: z.object({
         rawbody: z.string(),
+        order: z.number(),
       }),
     }),
     guide: defineCollection({
       type: 'page',
       source: {
         include: 'docs/guide/**/**.md',
-        exclude: ['docs/guide/contents.md'],
+        exclude: ['docs/guide/toc.md'],
       },
       schema: z.object({
         rawbody: z.string(),
@@ -33,11 +34,45 @@ export default defineContentConfig({
     }),
     contribute: defineCollection({
       type: 'page',
-      source: 'docs/contribute/*.md',
+      source: {
+        include: 'docs/contribute/*.md',
+        exclude: ['docs/contribute/toc.md'],
+      },
+      schema: z.object({
+        rawbody: z.string(),
+        updatedAt: z.date(),
+      }),
+    }),
+    contributeTOC: defineCollection({
+      type: 'page',
+      source: 'docs/contribute/toc.md',
     }),
     install: defineCollection({
       type: 'page',
       source: 'docs/install.md',
+    }),
+    blog: defineCollection({
+      type: 'page',
+      source: 'blog/*.md',
+      schema: z.object({
+        rawbody: z.string(),
+        updatedAt: z.date(),
+      }),
+    }),
+    cookbook: defineCollection({
+      type: 'page',
+      source: {
+        include: 'docs/cookbook/*.md',
+        exclude: ['docs/cookbook/toc.md'],
+      },
+      schema: z.object({
+        rawbody: z.string(),
+        updatedAt: z.date(),
+      }),
+    }),
+    cookbookTOC: defineCollection({
+      type: 'page',
+      source: 'docs/cookbook/toc.md',
     }),
   },
 })

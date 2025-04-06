@@ -11,8 +11,19 @@
     <DocsPageTOC :toc="post.body.toc" />
   </div>
 </template>
+<style scoped>
+div {
+  scroll-behavior: smooth;
+}
+</style>
 <script setup lang="ts">
+const slug = useRoute().params.slug
 const { data: post } = await useAsyncData(() => {
-  return queryCollection('contribute').first()
+  return queryCollection('quickstarts').path(`/docs/quickstarts/${slug}`).first()
+})
+
+useSeoMeta({
+  title: post.value?.title,
+  description: post.value?.description,
 })
 </script>

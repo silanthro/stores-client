@@ -1,4 +1,4 @@
-export interface Tutorial {
+export interface Quickstart {
   id: string
   title: string
   section: string
