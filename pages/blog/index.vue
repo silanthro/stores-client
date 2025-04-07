@@ -2,7 +2,7 @@
   <div class="h-full overflow-auto px-4">
     <div class="max-w-3xl mx-auto py-8 mb-36">
       <h1 class="text-3xl! mb-8">Blog</h1>
-      <div class="grid grid-cols-1 gap-8">
+      <div class="grid gap-8">
         <!-- Latest Post -->
         <NuxtLink
           v-if="latestPost"
