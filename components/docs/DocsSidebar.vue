@@ -3,13 +3,13 @@
   <aside class="z-10 md:hidden w-full">
     <nav class="relative w-full">
       <Menu>
-        <MenuButton class="p-4 w-full">
+        <MenuButton class="px-4 py-3 w-full border-b border-neutral-200">
           <span class="text-sm flex flex-row items-center gap-1"
             ><Bars3Icon class="w-4 h-4" />{{ props.heading }}</span
           >
         </MenuButton>
         <MenuItems
-          class="absolute left-0 top-full w-full bg-white border border-neutral-200 p-4 space-y-1">
+          class="relative left-0 top-full w-full bg-white border border-neutral-200 p-4 space-y-1">
           <MenuItem v-slot="{ close }" as="div">
             <NuxtLink
               :to="props.headingLink"
