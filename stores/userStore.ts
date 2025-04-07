@@ -4,6 +4,11 @@ import { getUserRepos } from '@/utils/githubApi'
 import { supabase } from '@/utils/supabase'
 import type { RepoMetadata } from '@/utils/types/tools'
 
+const REDIRECT_URL =
+  import.meta.env.MODE === 'development'
+    ? 'http://localhost:3000'
+    : 'https://stores-tools.vercel.app'
+
 export const useUserStore = defineStore('user', {
   state: () => ({
     userId: useStorage('userId', undefined) as RemovableRef<string | undefined>,
@@ -21,6 +26,7 @@ export const useUserStore = defineStore('user', {
         provider: 'github',
         options: {
           scopes: 'public_repo',
+          redirectTo: REDIRECT_URL,
         },
       })
     },
