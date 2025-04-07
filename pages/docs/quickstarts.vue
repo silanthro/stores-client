@@ -2,7 +2,7 @@
   <div
     class="flex flex-col md:flex-row h-full overflow-auto md:overflow-hidden">
     <DocsSidebar
-      heading="Quickstart"
+      heading="Quickstarts"
       heading-link="/docs/quickstarts"
       :articles="articles" />
     <div class="grow overflow-hidden">
