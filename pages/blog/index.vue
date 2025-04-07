@@ -1,6 +1,6 @@
 <template>
   <div class="h-full overflow-auto">
-    <div class="max-w-3xl mx-auto p-8 mb-36">
+    <div class="max-w-3xl mx-auto py-8 mb-36">
       <h1 class="text-3xl! mb-8">Blog</h1>
       <div class="grid grid-cols-1 gap-8">
         <!-- Latest Post -->

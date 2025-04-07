@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="post"
-    class="w-full pt-16 h-full justify-center flex overflow-auto gap-16">
+    class="w-full pt-8 md:pt-16 px-4 h-full flex flex-col md:flex-row md:justify-center md:items-start overflow-auto gap-4 md:gap-16">
     <!-- <div class="w-full max-w-6xl flex flex mx-auto gap-4"> -->
     <NuxtLink
       to="/blog"
-      class="flex no-underline gap-1 text-neutral-500 hover:text-neutral-700 sticky top-0">
+      class="xl:w-56 flex items-center no-underline gap-1 text-neutral-500 hover:text-neutral-700">
       <ChevronLeftIcon class="w-4 h-4" />
       <div class="text-sm">Blog</div>
     </NuxtLink>
