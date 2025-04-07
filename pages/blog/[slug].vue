@@ -5,7 +5,7 @@
     <!-- <div class="w-full max-w-6xl flex flex mx-auto gap-4"> -->
     <NuxtLink
       to="/blog"
-      class="xl:w-56 flex items-center no-underline gap-1 text-neutral-500 hover:text-neutral-700">
+      class="xl:w-56 flex items-center no-underline gap-1 text-neutral-500 hover:text-neutral-700 md:sticky top-0">
       <ChevronLeftIcon class="w-4 h-4" />
       <div class="text-sm">Blog</div>
     </NuxtLink>
