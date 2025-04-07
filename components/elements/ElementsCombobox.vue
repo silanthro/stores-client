@@ -4,7 +4,7 @@
       <div class="border flex items-center">
         <ComboboxInput
           ref="input"
-          class="px-4 py-2"
+          class="grow px-4 py-2"
           :displayValue="(o: any) => o[labelKey]"
           @change="query = $event.target.value"
           @focus="handleInputFocus"

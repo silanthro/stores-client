@@ -1,6 +1,7 @@
 <template>
   <div class="w-full space-y-4">
-    <div class="max-w-full flex items-start justify-between gap-4">
+    <div
+      class="max-w-full flex flex-col md:flex-row items-start justify-between gap-4">
       <div class="flex gap-0 items-center shrink overflow-hidden">
         <h3 class="text-2xl truncate shrink h-10">
           {{ props.repo.full_name }}
@@ -17,9 +18,9 @@
         </div>
       </div>
       <div
-        class="flex gap-2 w-max shrink-0"
+        class="flex gap-2 md:w-max shrink-0 items-center"
         v-if="!loading && index && index.tools">
-        <div v-if="unchangedFromLatest" class="flex items-center px-2">
+        <div v-if="unchangedFromLatest" class="shrink flex items-center px-2">
           No change from latest version
         </div>
         <div v-else class="flex items-center gap-2">
@@ -41,7 +42,7 @@
           </div>
         </div>
         <ElementsCTAButton
-          class="h-max"
+          class="h-max whitespace-nowrap"
           :disabled="
             unchangedFromLatest ||
             versionError ||

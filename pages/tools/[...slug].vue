@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen overflow-hidden flex flex-col">
     <Navbar />
-    <div class="grow overflow-auto">
+    <div class="grow overflow-auto px-4">
       <div class="max-w-[72rem] mx-auto h-full flex flex-col gap-8">
         <div
           v-if="loading"

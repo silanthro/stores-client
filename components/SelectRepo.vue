@@ -2,8 +2,8 @@
   <div class="max-w-full flex flex-col gap-4 p-4 border bg-white">
     <div v-if="loading" class="text-neutral-500">Loading...</div>
     <div v-else class="flex flex-col gap-4">
-      <div class="flex gap-4">
-        <div class="w-max shrink-0">
+      <div class="grid md:flex gap-4">
+        <div class="md:w-max shrink-0">
           <ElementsCombobox
             :options="userStore.repoOwners.map((o) => ({ label: o }))"
             v-model="selectedRepoOwner" />
@@ -21,7 +21,7 @@
         <button
           v-for="repo in recentRepos"
           @click="emit('select', repo)"
-          class="w-full px-4 py-3 flex items-center justify-between gap-4 overflow-hidden hover:bg-neutral-50 hover:outline-1 group">
+          class="w-full px-4 py-3 flex items-center justify-between gap-4 overflow-hidden hover:bg-neutral-50 hover:outline-1 group truncate">
           <div class="flex shrink gap-2 overflow-hidden">
             <div class="truncate font-medium">
               {{ repo.full_name }}
@@ -30,7 +30,9 @@
               {{ prettifyDate(repo.pushed_at) }}
             </div>
           </div>
-          <div class="opacity-0 group-hover:opacity-100">Add to Stores</div>
+          <div class="hidden md:block opacity-0 group-hover:opacity-100">
+            Add to Stores
+          </div>
         </button>
       </div>
     </div>

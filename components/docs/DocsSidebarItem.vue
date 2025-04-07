@@ -7,12 +7,13 @@
       :class="[
         props.item.link ? 'hover:text-neutral-800 transition-colors' : '',
       ]"
+      @click="$emit('click')"
       >{{ props.item.label }}</NuxtLink
     >
     <ul
       v-if="props.item.children"
       class="pt-1 space-y-0 ml-1 font-normal text-neutral-500 normal-case">
-      <DocsSidebarItem v-for="c in props.item.children" :item="c" class="" />
+      <DocsSidebarItem v-for="c in props.item.children" :item="c" class="" @click="$emit('click')" />
     </ul>
   </li>
 </template>
@@ -24,6 +25,8 @@ const path = computed(() => useRoute().fullPath)
 const props = defineProps<{
   item: Article
 }>()
+
+defineEmits(['click'])
 
 function getNestedLink(item: Article): string | undefined {
   // Return Article.link if available
