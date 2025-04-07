@@ -4,16 +4,15 @@
     <NuxtLink to="/" class="font-semibold text-xl font-display">
       Stores
     </NuxtLink>
-    
+
     <!-- Mobile menu button -->
-    <Menu>
-      <MenuButton
-        class="md:hidden p-2"
-        aria-label="Toggle menu">
-        <Bars3Icon v-if="!isMenuOpen" class="w-6 h-6" />
+    <Menu v-slot="{ open }">
+      <MenuButton class="md:hidden p-2" aria-label="Toggle menu">
+        <Bars3Icon v-if="!open" class="w-6 h-6" />
         <XMarkIcon v-else class="w-6 h-6" />
       </MenuButton>
-      <MenuItems class="z-10 md:hidden absolute top-14 left-0 w-full grid grid-cols-2 bg-white border border-neutral-200">
+      <MenuItems
+        class="z-10 md:hidden absolute top-14 left-0 w-full grid grid-cols-2 bg-white border border-neutral-200">
         <MenuItem v-for="page in pages" v-slot="{ active }">
           <NuxtLink
             :to="page.link"
@@ -22,10 +21,15 @@
             {{ page.name }}
           </NuxtLink>
         </MenuItem>
-        <span v-if="userStore.username" class="px-4 py-2 font-medium col-span-2">
+        <span
+          v-if="userStore.username"
+          class="px-4 py-2 font-medium col-span-2">
           {{ userStore.username }}
         </span>
-        <MenuItem v-if="userStore.username" v-slot="{ active }" class="px-4 py-2">
+        <MenuItem
+          v-if="userStore.username"
+          v-slot="{ active }"
+          class="px-4 py-2">
           <button
             class="block text-left"
             :class="{ 'bg-neutral-100': active }"
@@ -33,7 +37,10 @@
             Add tools
           </button>
         </MenuItem>
-        <MenuItem v-if="userStore.username" v-slot="{ active }" class="px-4 py-2">
+        <MenuItem
+          v-if="userStore.username"
+          v-slot="{ active }"
+          class="px-4 py-2">
           <button
             class="block text-left"
             :class="[active ? 'bg-neutral-100' : '']"
@@ -94,12 +101,10 @@
 </template>
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { ref } from 'vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const userStore = useUserStore()
-const isMenuOpen = ref(false)
 
 const pages = [
   {
