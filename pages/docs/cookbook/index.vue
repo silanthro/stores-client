@@ -1,5 +1,6 @@
 <template>
-  <div class="max-w-6xl mx-auto pb-16 md:py-8 md:px-8 h-full overflow-auto">
+  <div
+    class="max-w-6xl mx-auto pt-4 pb-16 md:py-8 px-4 md:px-8 h-full overflow-auto">
     <h1 class="text-3xl! mb-8">Cookbook</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <NuxtLink
@@ -35,12 +36,12 @@ const receipes = computed(() => {
       id: b.stem.split('/').slice(-1)[0],
       title: (b.title as string) || '',
       description: (b.description as string) || '',
-      author: (b.meta.author as { name: string; title: string; img: string }) || '',
+      author:
+        (b.meta.author as { name: string; title: string; img: string }) || '',
       tags: (b.meta.tags as string[]) || [],
       createdAt: (b.meta.createdAt as Date) || new Date(),
       updatedAt: (b.meta.updatedAt as Date) || new Date(),
     }
   })
 })
-
 </script>

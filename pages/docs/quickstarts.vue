@@ -1,10 +1,11 @@
 <template>
-  <div class="flex flex-col md:flex-row h-full">
+  <div
+    class="flex flex-col md:flex-row h-full overflow-auto md:overflow-hidden">
     <DocsSidebar
       heading="Quickstart"
       heading-link="/docs/quickstarts"
       :articles="articles" />
-    <div class="grow px-4">
+    <div class="grow overflow-hidden">
       <NuxtPage />
     </div>
   </div>
