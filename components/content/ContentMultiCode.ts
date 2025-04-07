@@ -19,11 +19,7 @@ export default {
     if (!slots.default) return null
     const selected = ref(0)
     return () => [
-      h('div',
-        {
-          class:
-            'grid grid-cols-1',
-        }, [
+      h('div', [
         h(
           'div',
           {
