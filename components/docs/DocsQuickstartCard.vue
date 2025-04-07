@@ -14,7 +14,7 @@
         :key="quickstart.id"
         :to="`/docs/quickstarts/${quickstart.id}`"
         :title="quickstart.section"
-        class="p-4 bg-white border border-neutral-200 hover:border-neutral-500 transition-border">
+        class="p-1 sm:p-2 md:p-4 bg-white border border-neutral-200 hover:border-neutral-500 transition-border">
         <img
           :src="`/img/logos/${quickstart.logo}`"
           :alt="`${quickstart.title} logo`"

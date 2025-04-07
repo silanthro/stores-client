@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl mx-auto p-8 h-full overflow-auto">
+  <div class="max-w-6xl mx-auto pb-16 md:py-8 md:px-8 h-full overflow-auto">
     <h1 class="text-3xl! mb-8">Cookbook</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <NuxtLink

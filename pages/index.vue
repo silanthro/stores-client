@@ -1,9 +1,10 @@
 <template>
   <div class="h-screen overflow-hidden flex flex-col">
     <Navbar />
-    <div class="overflow-auto">
-      <div class="max-w-[72rem] h-full flex flex-col gap-24 mb-[30rem] mx-auto">
-        <div class="flex mt-24 items-end justify-between gap-24 w-full">
+    <div class="overflow-auto px-4">
+      <div class="max-w-[72rem] flex flex-col gap-24 mb-24 mx-auto">
+        <div
+          class="flex flex-col md:flex-row mt-24 md:items-end justify-between gap-24 w-full">
           <div class="space-y-16 shrink">
             <div class="space-y-4">
               <h1>Stores</h1>
@@ -19,7 +20,7 @@
               </div>
             </div> -->
           </div>
-          <div class="grow max-w-[40rem] shrink-0">
+          <div class="grow">
             <CodeSnippet />
           </div>
         </div>

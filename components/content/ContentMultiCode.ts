@@ -34,7 +34,7 @@ export default {
                   'px-4 py-2.5 display-block h-full border-b whitespace-nowrap' +
                   (selected.value === i
                     ? ' border-black'
-                    : 'border-transparent text-neutral-500'),
+                    : ' border-transparent text-neutral-500'),
                 onClick() {
                   selected.value = i
                 },

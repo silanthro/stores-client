@@ -1,11 +1,11 @@
 <template>
-  <div class="flex h-full">
+  <div class="flex flex-col md:flex-row h-full">
     <DocsSidebar
       heading="Cookbook"
       heading-link="/docs/cookbook"
       collection-name="cookbook"
       collectionTOC="cookbookTOC" />
-    <div class="grow">
+    <div class="grow px-4">
       <NuxtPage />
     </div>
   </div>
