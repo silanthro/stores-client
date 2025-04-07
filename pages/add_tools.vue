@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen overflow-hidden flex flex-col">
     <Navbar />
-    <div class="grow overflow-auto">
+    <div class="grow overflow-auto px-4">
       <div class="max-w-[72rem] h-full flex flex-col gap-8 mx-auto">
         <div class="flex mt-24 items-end justify-between gap-24 w-full">
           <h2>Add Tools</h2>
