@@ -17,7 +17,7 @@
 <script setup lang="ts">
 const pages = [
   {
-    name: 'Quickstart',
+    name: 'Quickstarts',
     link: '/docs/quickstarts',
   },
   {
