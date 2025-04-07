@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative not-prose border border-neutral-200 divide-y-1 divide-neutral-200">
+    class="relative not-prose grid grid-cols-1 border border-neutral-200 divide-y-1 divide-neutral-200">
     <div v-if="props.filename" class="px-4 py-2.5 text-sm font-medium">
       {{ props.filename }}
     </div>

@@ -19,7 +19,11 @@ export default {
     if (!slots.default) return null
     const selected = ref(0)
     return () => [
-      h('div', [
+      h('div',
+        {
+          class:
+            'grid grid-cols-1',
+        }, [
         h(
           'div',
           {
@@ -34,7 +38,7 @@ export default {
                   'px-4 py-2.5 display-block h-full border-b whitespace-nowrap' +
                   (selected.value === i
                     ? ' border-black'
-                    : 'border-transparent text-neutral-500'),
+                    : ' border-transparent text-neutral-500'),
                 onClick() {
                   selected.value = i
                 },
