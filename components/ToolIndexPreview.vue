@@ -39,8 +39,8 @@
 // import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid'
 import {
   BookOpenIcon,
-  BuildingLibraryIcon,
-  CodeBracketIcon,
+  // BuildingLibraryIcon,
+  // CodeBracketIcon,
   WrenchIcon,
 } from '@heroicons/vue/24/outline'
 import type { RepoMetadata } from '@/utils/types/tools'

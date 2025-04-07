@@ -1,15 +1,20 @@
 <template>
   <!-- Mobile sidebar -->
-  <aside
-    class="z-10 md:hidden w-full">
-    <nav class="relative p-4 w-full">
+  <aside class="z-10 md:hidden w-full">
+    <nav class="relative w-full">
       <Menu>
-        <MenuButton>
-          <span class="text-sm flex flex-row items-center gap-1"><Bars3Icon class="w-4 h-4" />{{ props.heading }}</span>
+        <MenuButton class="p-4 w-full">
+          <span class="text-sm flex flex-row items-center gap-1"
+            ><Bars3Icon class="w-4 h-4" />{{ props.heading }}</span
+          >
         </MenuButton>
-        <MenuItems class="absolute left-4 right-4 bg-white border border-neutral-200 p-2 space-y-1">
+        <MenuItems
+          class="absolute left-0 top-full w-full bg-white border border-neutral-200 p-4 space-y-1">
           <MenuItem v-slot="{ close }" as="div">
-            <NuxtLink :to="props.headingLink" class="px-1 py-1 font-semibold" @click="close">
+            <NuxtLink
+              :to="props.headingLink"
+              class="px-1 py-1 font-semibold"
+              @click="close">
               {{ props.heading }}
             </NuxtLink>
           </MenuItem>
@@ -27,7 +32,6 @@
       </Menu>
     </nav>
   </aside>
-
   <!-- Desktop sidebar -->
   <aside
     class="hidden md:block w-64 border-r border-neutral-200 h-[calc(100vh-60px)] sticky top-14">
@@ -45,10 +49,10 @@
   </aside>
 </template>
 <script setup lang="ts">
-import DocsSidebarItem from './DocsSidebarItem.vue'
-import type { Article } from '@/utils/types/docs'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon } from '@heroicons/vue/24/outline'
+import DocsSidebarItem from './DocsSidebarItem.vue'
+import type { Article } from '@/utils/types/docs'
 
 const props = defineProps({
   heading: String,

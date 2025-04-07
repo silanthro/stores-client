@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full overflow-auto">
+  <div class="h-full overflow-auto px-4">
     <div class="max-w-3xl mx-auto py-8 mb-36">
       <h1 class="text-3xl! mb-8">Blog</h1>
       <div class="grid grid-cols-1 gap-8">
@@ -13,8 +13,7 @@
             <img
               :src="latestPost.coverImg"
               :alt="latestPost.coverAlt"
-              class="w-full object-cover rounded-lg mb-2"
-            />
+              class="w-full object-cover rounded-lg mb-2" />
             <span class="text-xs text-neutral-400">
               {{ latestPost.tags[0] }}
             </span>
@@ -29,8 +28,7 @@
             <img
               :src="latestPost.author.img"
               :alt="latestPost.author.name"
-              class="w-8 h-8 rounded-full"
-            />
+              class="w-8 h-8 rounded-full" />
             <div>
               <p class="text-sm text-neutral-600">
                 {{ latestPost.author.name }}
@@ -64,8 +62,7 @@
               <img
                 :src="post.author.img"
                 :alt="post.author.name"
-                class="w-6 h-6 rounded-full"
-              />
+                class="w-6 h-6 rounded-full" />
               <div>
                 <p class="text-xs text-neutral-600">
                   {{ post.author.name }}
@@ -94,7 +91,8 @@ const posts = computed(() => {
       id: b.stem.split('/').slice(-1)[0],
       title: (b.title as string) || '',
       description: (b.description as string) || '',
-      author: (b.meta.author as { name: string; title: string; img: string }) || '',
+      author:
+        (b.meta.author as { name: string; title: string; img: string }) || '',
       coverImg: (b.meta.coverImg as string) || '',
       coverAlt: (b.meta.coverAlt as string) || '',
       tags: (b.meta.tags as string[]) || [],

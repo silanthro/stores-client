@@ -20,10 +20,10 @@
             >{{ tag }}</span
           >
         </div>
-        <h1 class="text-5xl! font-medium! tracking-tight mb-2">
+        <h1 class="text-4xl! md:text-5xl! font-medium! tracking-tight mb-2">
           {{ post.title }}
         </h1>
-        <span class="text-lg text-neutral-500">{{ post.description }}</span>
+        <span class="md:text-lg text-neutral-500">{{ post.description }}</span>
         <img
           v-if="post.meta?.coverImg"
           :src="String(post.meta.coverImg)"

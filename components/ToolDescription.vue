@@ -19,7 +19,7 @@
       </span>
     </div>
     <div class="text-sm text-neutral-500">
-      <pre class="font-sans">{{ props.tool.doc }}</pre>
+      <pre class="font-sans text-wrap">{{ props.tool.doc }}</pre>
     </div>
   </div>
 </template>
