@@ -79,7 +79,7 @@ client = anthropic.Anthropic()
 messages = [
     {
         "role": "user",
-        "content": "What tasks are due today? Do them for me.",
+        "content": "What tasks are due today? Use your tools to complete them for me. Don't ask questions.",
     }
 ]
 
@@ -175,7 +175,7 @@ chat = client.chats.create(model="gemini-2.0-flash", config=config)
 
 # Get the response from the model. Gemini will automatically execute the tool call.
 response = chat.send_message(
-    "Rename the files in the '/Users/username/Documents/folder' directory according to its content. Use tools when necessary."
+    "What tasks are due today? Use your tools to complete them for me. Don't ask questions."
 )
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
@@ -208,7 +208,7 @@ client = OpenAI()
 messages = [
     {
         "role": "user",
-        "content": "What tasks are due today? Do them for me.. Skip system files.",
+        "content": "What tasks are due today? Use your tools to complete them for me. Don't ask questions.",
     }
 ]
 
@@ -280,7 +280,7 @@ model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
 model_with_tools = model.bind_tools(index.tools)
 messages = [
     HumanMessage(
-        content="What tasks are due today? Do them for me."
+        content="What tasks are due today? Use your tools to complete them for me. Don't ask questions."
     ),
 ]
 
@@ -351,7 +351,7 @@ response = agent_executor.invoke(
     {
         "messages": [
             HumanMessage(
-                content="What tasks are due today? Do them for me."
+                content="What tasks are due today? Use your tools to complete them for me. Don't ask questions."
             )
         ]
     }
@@ -421,7 +421,7 @@ index = stores.Index(
 messages = [
     {
         "role": "user",
-        "content": "What tasks are due today? Do them for me.",
+        "content": "What tasks are due today? Use your tools to complete them for me. Don't ask questions.",
     },
 ]
 
