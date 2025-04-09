@@ -10,7 +10,7 @@ createdAt: 2025-04-09
 updatedAt: 2025-04-09
 ---
 
-# Creating research documents with AI
+# Research and add findings to Notion
 
 While apps like ChatGPT (Deep Research) and Perplexity can research for you, you still have to manually copy and paste the research into your documents. Let's build an AI agent that can research and add its findings to Notion for us.
 
