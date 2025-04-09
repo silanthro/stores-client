@@ -463,6 +463,8 @@ python research-to-notion.py
 
 The AI agent will research Hacker News, find the "News" page, and add a new page with the top 3 posts.
 
+![Page created in Notion](/img/cookbook/research-to-notion/notion-result.jpg)
+
 To make this AI agent even more useful, you can set up a cron job to run this script every morning and you will get a daily digest waiting for you in your Notion.
 
 If you have any questions, let us know on [GitHub](https://github.com/silanthro/stores).
