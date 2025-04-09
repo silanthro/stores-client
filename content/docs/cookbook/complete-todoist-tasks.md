@@ -51,7 +51,7 @@ The Hacker News tools do not require an API key.
 Some APIs and frameworks (e.g. Gemini, LangGraph, and LlamaIndex agent) automatically execute tool calls, which make the code much simpler. For the rest, we will need to add a `while` loop so that the agent will keep working on the next step until the task is completed.
 
 ::content-multi-code
-```python {4, 9-21, 40-41, 59-62} [Anthropic]
+```python {4, 9-21, 39-40, 58-61} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -83,66 +83,61 @@ messages = [
     }
 ]
 
-# Define agent loop
-def run_agent_loop():
-    while True:
-        # Get the response from the model
-        response = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=1024,
-            messages=messages,
-            # Pass tools
-            tools=index.format_tools("anthropic"),
-        )
+# Run agent loop
+while True:
+    # Get the response from the model
+    response = client.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=1024,
+        messages=messages,
+        # Pass tools
+        tools=index.format_tools("anthropic"),
+    )
 
-        # Check if all blocks contain only text, which indicates task completion for this example
-        blocks = response.content
-        if all(block.type == "text" for block in blocks):
-            print(f"Assistant response: {blocks[0].text}\n")
-            return  # End the agent loop
+    # Check if all blocks contain only text, which indicates task completion for this example
+    blocks = response.content
+    if all(block.type == "text" for block in blocks):
+        print(f"Assistant response: {blocks[0].text}\n")
+        break  # End the agent loop
 
-        # Otherwise, process the response, which could include both text and tool use
-        for block in blocks:
-            if block.type == "text" and block.text:
-                print(f"Assistant response: {block.text}\n")
-                messages.append({"role": "assistant", "content": block.text})
-            elif block.type == "tool_use":
-                name = block.name
-                args = block.input
+    # Otherwise, process the response, which could include both text and tool use
+    for block in blocks:
+        if block.type == "text" and block.text:
+            print(f"Assistant response: {block.text}\n")
+            messages.append({"role": "assistant", "content": block.text})
+        elif block.type == "tool_use":
+            name = block.name
+            args = block.input
 
-                # Execute tool call
-                print(f"Executing tool call: {name}({args})\n")
-                output = index.execute(name, args)
-                print(f"Tool output: {output}\n")
-                messages.append(
-                    {
-                        "role": "assistant",
-                        "content": [
-                            {
-                                "type": "tool_use",
-                                "id": block.id,
-                                "name": block.name,
-                                "input": block.input,
-                            }
-                        ],
-                    }
-                )
-                messages.append(
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "tool_result",
-                                "tool_use_id": block.id,
-                                "content": str(output),
-                            }
-                        ],
-                    }
-                )
-
-
-# Run the agent loop
-run_agent_loop()
+            # Execute tool call
+            print(f"Executing tool call: {name}({args})\n")
+            output = index.execute(name, args)
+            print(f"Tool output: {output}\n")
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": [
+                        {
+                            "type": "tool_use",
+                            "id": block.id,
+                            "name": block.name,
+                            "input": block.input,
+                        }
+                    ],
+                }
+            )
+            messages.append(
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "tool_result",
+                            "tool_use_id": block.id,
+                            "content": str(output),
+                        }
+                    ],
+                }
+            )
 ```
 ```python {5, 10-22, 24-26} [Gemini]
 import os
