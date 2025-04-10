@@ -41,12 +41,21 @@ For a simpler demo for Todoist, check out [Getting tasks from Todoist](/docs/coo
 
 To get started, we first set the following environment variables in a `.env` file:
 
-- `TODOIST_API_TOKEN`: The API key of the Todoist account you want to use
+- `TODOIST_API_TOKEN`: The API key of your Todoist account (see below)
 - `GMAIL_ADDRESS`: The sender's email
 - `GMAIL_PASSWORD`: The sender's [app password](https://myaccount.google.com/apppasswords), **not account password**
 - `<COMPANY>_API_KEY`: The API key of the model you want to use
+- The Hacker News tools do not require an API key.
 
-The Hacker News tools do not require an API key.
+### Todoist setup
+
+To get your Todoist API key:
+
+1. Click on your profile icon in the top-right corner
+2. Select "Settings"
+3. Click on "Integrations"
+4. Click on "Developer"
+5. Copy the API token and save it as an environment variable
 
 ## Scripts
 

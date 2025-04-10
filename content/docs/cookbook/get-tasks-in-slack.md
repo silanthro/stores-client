@@ -29,9 +29,9 @@ Specifically, our AI agent will:
 To complete this task, our AI agent is equipped with tools to:
 
 - [Get, update, and close tasks in Todoist](https://github.com/silanthro/todoist)
-- [Send messages in Slack](https://github.com/silanthro/slack)
+- [Send messages on Slack](https://github.com/silanthro/slack)
 
-Even though we are using Todoist and Slack in this example, you can also use [a research tool](/docs/cookbook/research-to-notion) to message yourself news or [email yourself](/docs/cookbook/send-email) your tasks.
+Even though we are using Todoist and Slack in this example, you can also use [a research tool](/docs/cookbook/research-to-notion) to send news in Slack or use [a email tool to send yourself](/docs/cookbook/send-email) your tasks.
 
 ## Setup
 
@@ -74,7 +74,7 @@ SLACK_WEBHOOKS=<WEBHOOK_TO_GENERAL_CHANNEL>
 SLACK_WEBHOOKS='{"general": "<WEBHOOK_TO_GENERAL_CHANNEL>", "random": "<WEBHOOK_TO_RANDOM_CHANNEL>"}'
 ```
 
-The AI agent will then be able to post messages to only these channels. 
+The AI agent will then be able to only post messages to only these channels. It won't have the permission to read messages in your Slack workspace.
 
 ## Scripts
 
@@ -510,10 +510,10 @@ In the folder where you have this script, you can run the AI agent with the comm
 python get-tasks-in-slack.py
 ```
 
-The AI agent will get the tasks due today from Todoist and message you in Slack.
+The AI agent will get the tasks due today from Todoist and message you on Slack.
 
 ![Tasks in Slack](/img/cookbook/get-tasks-in-slack/tasks-in-slack.jpg)
 
-To make this AI agent even more useful, you can set up a cron job to run this script every morning and you will get a daily task brief in your Slack.
+To make this AI agent even more useful, you can set up a cron job to run this script every morning and get a daily task brief in your Slack.
 
 If you have any questions, let us know on [GitHub](https://github.com/silanthro/stores).

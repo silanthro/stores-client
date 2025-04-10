@@ -22,9 +22,9 @@ For this demo, we will show how to build an AI agent that can get the top three 
 
 Specifically, our AI agent will:
 
-- Get the top 3 Hacker News posts
-- Find the "News" page in our Notion workspace
-- In the "News" page, create a new page with the specified title and the research results
+1. Get the top 3 Hacker News posts
+2. Find the "News" page in our Notion workspace
+3. In the "News" page, create a new page with the specified title and the research results
 
 To complete this task, our AI agent is equipped with tools to:
 
@@ -45,20 +45,20 @@ To get started, we first set the following environment variables in our `.env` f
 
 We will need to set up a Notion integration so that our AI agent can access our Notion workspace securely. To do that and to get the Notion integration secret:
 
-- Go to https://www.notion.so/profile/integrations/
-- Click on "New integration"
-- Add your integration name (e.g. "Stores" or "AI Assistant")
-- Select the workspace for this integration
-- Select "Internal" for [the integration type](https://developers.notion.com/docs/getting-started#internal-vs-public-integrations) (This keeps things simple, unless you want to share your integration with others)
-- Click on "Save"
-- Copy the "Internal Integration Secret" and save it as an environment variable
+1. Go to https://www.notion.so/profile/integrations/
+2. Click on "New integration"
+3. Add your integration name (e.g. "Stores" or "AI Assistant")
+4. Select the workspace for this integration
+5. Select "Internal" for [the integration type](https://developers.notion.com/docs/getting-started#internal-vs-public-integrations) (This keeps things simple, unless you want to share your integration with others)
+6. Click on "Save"
+7. Copy the "Internal Integration Secret" and save it as an environment variable
 
 With an internal integration, we have to explicitly grant access to specific pages. I find this helpful because I can restrict the pages that the AI agent can access.
 
-- Go to the page you want to grant access to (e.g. a "News" page)
-- Click on the three dots at the top-right corner
-- Click on "Connections" (usually the last item in the menu)
-- Click on your integration to enable access to this page and its children
+1. Go to the page you want to grant access to (e.g. a "News" page)
+2. Click on the three dots at the top-right corner
+3. Click on "Connections" (usually the last item in the menu)
+4. Click on your integration to enable access to this page and its children
 
 ![Notion Connections](/img/cookbook/research-to-notion/notion-connections.jpg)
 
@@ -487,6 +487,6 @@ The AI agent will research Hacker News, find the "News" page, and add a new page
 
 ![Page created in Notion](/img/cookbook/research-to-notion/notion-result.jpg)
 
-To make this AI agent even more useful, you can set up a cron job to run this script every morning and you will get a daily digest waiting for you in your Notion.
+To make this AI agent even more useful, you can set up a cron job to run this script every morning and get a daily digest waiting for you in your Notion.
 
 If you have any questions, let us know on [GitHub](https://github.com/silanthro/stores).
