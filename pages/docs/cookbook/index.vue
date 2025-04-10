@@ -36,7 +36,7 @@ const recipes = computed(() => {
       id: b.stem.split('/').slice(-1)[0],
       title: (b.title as string) || '',
       description: (b.description as string) || '',
-      tags: (b.tags as string[]) || [],
+      tags: (b.meta.tags as string[]) || [],
       updatedAt: (b.updatedAt as Date) || new Date(),
     }
   })
