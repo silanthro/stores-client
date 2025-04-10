@@ -1,6 +1,6 @@
 ---
 title: 'Research and add to Notion'
-description: 'Build an AI agent that can research Hacker News and add it to Notion'
+description: 'Build an AI agent that can research Hacker News and add its findings to Notion'
 author:
   name: 'Alfred'
   title: 'Co-founder'
@@ -14,12 +14,9 @@ updatedAt: 2025-04-09
 
 While apps like ChatGPT (Deep Research) and Perplexity can research for you, you still have to manually copy and paste the research into your documents. Let's build an AI agent that can research and add its findings to Notion for us.
 
-In this simple example, our AI agent has the following tools:
-
-- [Fetch the top stories on Hacker News](https://github.com/silanthro/hackernews)
-- [Get, create, and edit Notion pages](https://github.com/silanthro/notion)
-
 ## Scenario
+
+![Notion Flowchart](/img/cookbook/research-to-notion/notion-flowchart.jpg)
 
 For this demo, we will show how to build an AI agent that can get the top three Hacker News posts and add them to a Notion page named "News".
 
@@ -27,13 +24,18 @@ Specifically, our AI agent will:
 
 - Get the top 3 Hacker News posts
 - Find the "News" page in our Notion workspace
-- In the "News" page, create a new page with the specified title and the relevant findings
+- In the "News" page, create a new page with the specified title and the research results
 
-Even though we are researching Hacker News here, you can use a web search or Reddit search tool to find the news you are interested in.
+To complete this task, our AI agent is equipped with tools to:
+
+- [Fetch the top stories on Hacker News](https://github.com/silanthro/hackernews)
+- [Get, create, and edit Notion pages](https://github.com/silanthro/notion)
+
+Even though we are researching Hacker News in this example, you can use a web search or Reddit search tool to find the news you are interested in.
 
 ## Setup
 
-To get started, we first set the following environment variables:
+To get started, we first set the following environment variables in our `.env` file:
 
 - `NOTION_INTEGRATION_SECRET`: The integration secret of the Notion account you want to use (see below)
 - `<COMPANY>_API_KEY`: The API key of the model you want to use
@@ -49,7 +51,7 @@ We will need to set up a Notion integration so that our AI agent can access our 
 - Select the workspace for this integration
 - Select "Internal" for [the integration type](https://developers.notion.com/docs/getting-started#internal-vs-public-integrations) (This keeps things simple, unless you want to share your integration with others)
 - Click on "Save"
-- Copy the "Internal Integration Secret" and save it in your environment variables
+- Copy the "Internal Integration Secret" and save it as an environment variable
 
 With an internal integration, we have to explicitly grant access to specific pages. I find this helpful because I can restrict the pages that the AI agent can access.
 
@@ -69,7 +71,7 @@ Some APIs and frameworks (e.g. Gemini, LangGraph, and LlamaIndex agent) automati
 From my experiments, Gemini 2.0 Flash prefers to ask questions instead of using the tools to find the information it needs. You can either specify in the system prompt to use tools or try Gemini 2.5 Pro, which is much better at using tools.
 
 ::content-multi-code
-```python {4, 9-17, 35-36, 54-57} [Anthropic]
+```python {4, 9-17, 35-36, 55-58} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -118,6 +120,7 @@ while True:
     for block in blocks:
         if block.type == "text" and block.text:
             print(f"Assistant response: {block.text}\n")
+            # Append the assistant's response as context
             messages.append({"role": "assistant", "content": block.text})
         elif block.type == "tool_use":
             name = block.name
@@ -127,6 +130,8 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool output: {output}\n")
+
+            # Append the assistant's tool call message as context
             messages.append(
                 {
                     "role": "assistant",
@@ -140,6 +145,8 @@ while True:
                     ],
                 }
             )
+
+            # Append the tool result message as context
             messages.append(
                 {
                     "role": "user",
@@ -185,7 +192,7 @@ response = chat.send_message(
 )
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
-```python {6,11-19,36-37,54-57} [OpenAI]
+```python {6,11-19,36-37,55-58} [OpenAI]
 import json
 import os
 import datetime
@@ -234,6 +241,7 @@ while True:
     for item in response.output:
         if item.type == "text" and item.text:
             print(f"Assistant response: {item.text}\n")
+            # Append the assistant's response as context
             messages.append({"role": "assistant", "content": item.text})
         elif item.type == "function_call":
             name = item.name
@@ -243,16 +251,20 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool output: {output}\n")
-            messages.append(item)  # Append the assistant's tool call message as context
+
+            # Append the assistant's tool call message as context
+            messages.append(item)
+
+            # Append the tool call result as context
             messages.append(
                 {
                     "type": "function_call_output",
                     "call_id": item.call_id,
                     "output": str(output),
                 }
-            )  # Append the tool call result as context
+            )
 ```
-```python {6,11-19,21-23,53-56} [LangChain]
+```python {6,11-19,21-23,55-58} [LangChain]
 import os
 import datetime
 from dotenv import load_dotenv
@@ -287,6 +299,9 @@ while True:
     # Get the response from the model
     response = model_with_tools.invoke(messages)
 
+    # Append the assistant's response as context
+    messages.append(response)
+
     text = response.content
     tool_calls = response.tool_calls
 
@@ -296,7 +311,6 @@ while True:
         break  # End the agent loop
 
     # Otherwise, process the response, which could include both text and tool calls
-    messages.append(response)  # Append the response as context
     if text:
         print(f"Assistant response: {text}\n")
 
@@ -309,9 +323,11 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool Output: {output}\n")
+
+            # Append the tool call result as context
             messages.append(
                 ToolMessage(content=output, tool_call_id=tool_call["id"])
-            )  # Append the tool call result as context
+            )
 ```
 ```python {7,12-20,22-24} [LangGraph]
 import os
@@ -386,7 +402,7 @@ agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
 response = agent.chat(f"Add the top 3 Hacker News posts to a new Notion page, Top HN Posts ({datetime.date.today()}), in my News page")
 print(f"Assistant response: {response}")
 ```
-```python {5,7-15,31-32,52-55} [LiteLLM]
+```python {5,7-15,31-32,54-57} [LiteLLM]
 import datetime
 import json
 import os
@@ -431,6 +447,8 @@ while True:
 
     # Otherwise, process the response, which could include both text and tool calls
     if text:
+        print(f"Assistant response: {text}\n")
+        # Append the assistant's response as context
         messages.append({"role": "assistant", "content": text})
 
     if tool_calls:
@@ -442,16 +460,20 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool output: {output}\n")
+
+            # Append the assistant's tool call as context
             messages.append(
                 {"role": "assistant", "tool_calls": [tool_call]}
-            )  # Append the assistant's tool call as context
+            )  
+            
+            # Append the tool call result as context
             messages.append(
                 {
                     "role": "tool",
                     "tool_call_id": tool_call.id,
                     "content": str(output),
                 }
-            )  # Append the tool call result as context
+            ) 
 ```
 ::
 

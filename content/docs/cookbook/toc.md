@@ -1,7 +1,7 @@
 - Productivity
-    - get-todoist-tasks.md
-    - complete-todoist-tasks.md
     - research-to-notion.md
+    - complete-todoist-tasks.md
+    - get-todoist-tasks.md
 
 - Email
     - send-email.md

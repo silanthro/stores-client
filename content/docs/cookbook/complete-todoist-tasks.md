@@ -10,17 +10,13 @@ createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---
 
-# Getting things done with a Todoist agent
+# Get things done with a Todoist agent
 
 We all dream to have our own AI personal assistant someday. While the perfect AI assistant might still be far away, we can build simple AI agents that work with Todoist today.
 
-In this simple example, our AI agent has the following tools:
-
-- [Get, update, and close tasks in Todoist](https://github.com/silanthro/todoist)
-- [Fetch the top stories on Hacker News](https://github.com/silanthro/hackernews)
-- [Send plain-text email via Gmail](https://github.com/silanthro/send-gmail)
-
 ## Scenario
+
+![Todoist Flowchart](/img/cookbook/complete-todoist-tasks/todoist-flowchart.jpg)
 
 For this demo, we will show how to build an AI agent that can get tasks from Todoist, complete them, and close them in Todoist.
 
@@ -33,11 +29,17 @@ Our AI agent will:
 - Send them to the recipient via Gmail
 - Mark the task as done in Todoist
 
+To do this, our AI agent is equipped with tools to:
+
+- [Get, update, and close tasks in Todoist](https://github.com/silanthro/todoist)
+- [Fetch the top stories on Hacker News](https://github.com/silanthro/hackernews)
+- [Send plain-text email via Gmail](https://github.com/silanthro/send-gmail)
+
 For a simpler demo for Todoist, check out [Getting tasks from Todoist](/docs/cookbook/get-todoist-tasks).
 
 ## Setup
 
-To get started, we first set the following environment variables:
+To get started, we first set the following environment variables in a `.env` file:
 
 - `TODOIST_API_TOKEN`: The API key of the Todoist account you want to use
 - `GMAIL_ADDRESS`: The sender's email
@@ -51,7 +53,7 @@ The Hacker News tools do not require an API key.
 Some APIs and frameworks (e.g. Gemini, LangGraph, and LlamaIndex agent) automatically execute tool calls, which make the code much simpler. For the rest, we will need to add a `while` loop so that the agent will keep working on the next step until the task is completed.
 
 ::content-multi-code
-```python {4, 9-21, 39-40, 58-61} [Anthropic]
+```python {4, 9-21, 39-40, 59-62} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -104,6 +106,7 @@ while True:
     for block in blocks:
         if block.type == "text" and block.text:
             print(f"Assistant response: {block.text}\n")
+            # Append the assistant's response as context
             messages.append({"role": "assistant", "content": block.text})
         elif block.type == "tool_use":
             name = block.name
@@ -113,6 +116,8 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool output: {output}\n")
+
+            # Append the assistant's tool call as context
             messages.append(
                 {
                     "role": "assistant",
@@ -126,6 +131,8 @@ while True:
                     ],
                 }
             )
+
+            # Append the tool call result as context
             messages.append(
                 {
                     "role": "user",
@@ -174,7 +181,7 @@ response = chat.send_message(
 )
 print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
 ```
-```python {5, 10-22, 39-40, 57-59} [OpenAI]
+```python {5, 10-22, 39-40, 58-61} [OpenAI]
 import json
 import os
 from dotenv import load_dotenv
@@ -226,6 +233,7 @@ while True:
     for item in response.output:
         if item.type == "text" and item.text:
             print(f"Assistant response: {item.text}\n")
+            # Append the assistant's response as context
             messages.append({"role": "assistant", "content": item.text})
         elif item.type == "function_call":
             name = item.name
@@ -235,18 +243,22 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool output: {output}\n")
+
+            # Append the assistant's tool call message as context
             messages.append(
                 item
-            )  # Append the assistant's tool call message as context
+            )
+
+            # Append the tool call result as context
             messages.append(
                 {
                     "type": "function_call_output",
                     "call_id": item.call_id,
                     "output": str(output),
                 }
-            )  # Append the tool call result as context
+            )
 ```
-```python {5, 10-22, 24-26, 56-58} [LangChain]
+```python {5, 10-22, 24-26, 58-61} [LangChain]
 import os
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -287,13 +299,15 @@ while True:
     text = response.content
     tool_calls = response.tool_calls
 
+    # Append the assistant's response as context
+    messages.append(response)
+
     # Check if the response contains only text and no tool calls, which indicates task completion for this example
     if text and not tool_calls:
         print(f"Assistant response: {text}\n")
         break  # End the agent loop
 
     # Otherwise, process the response, which could include both text and tool calls
-    messages.append(response)  # Append the response as context
     if text:
         print(f"Assistant response: {text}\n")
 
@@ -306,9 +320,11 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool Output: {output}\n")
+
+            # Append the tool call result as context
             messages.append(
                 ToolMessage(content=output, tool_call_id=tool_call["id"])
-            )  # Append the tool call result as context
+            )
 
 ```
 ```python {6, 11-23, 25-27} [LangGraph]
@@ -392,7 +408,7 @@ response = agent.chat(
 )
 print(f"Assistant response: {response}")
 ```
-```python {4, 6-18, 34-35, 55-57} [LiteLLM]
+```python {4, 6-18, 34-35, 57-60} [LiteLLM]
 import json
 import os
 from litellm import completion
@@ -440,6 +456,8 @@ while True:
 
     # Otherwise, process the response, which could include both text and tool calls
     if text:
+        print(f"Assistant response: {text}\n")
+        # Append the assistant's response as context
         messages.append({"role": "assistant", "content": text})
 
     if tool_calls:
@@ -451,16 +469,20 @@ while True:
             print(f"Executing tool call: {name}({args})\n")
             output = index.execute(name, args)
             print(f"Tool output: {output}\n")
+
+            # Append the assistant's tool call as context
             messages.append(
                 {"role": "assistant", "tool_calls": [tool_call]}
-            )  # Append the assistant's tool call as context
+            )
+            
+            # Append the tool call result as context
             messages.append(
                 {
                     "role": "tool",
                     "tool_call_id": tool_call.id,
                     "content": str(output),
                 }
-            )  # Append the tool call result as context
+            ) 
 ```
 ::
 
