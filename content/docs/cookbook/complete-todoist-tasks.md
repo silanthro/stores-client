@@ -494,4 +494,6 @@ python complete-task.py
 
 The AI agent will get the task, complete it, and mark it as done in Todoist.
 
+![Hacker New posts in email](/img/cookbook/complete-todoist-tasks/hn-email.jpg)
+
 If you have any questions, let us know on [GitHub](https://github.com/silanthro/stores).
