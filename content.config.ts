@@ -71,6 +71,12 @@ export default defineContentConfig({
         description: z.string(),
         tags: z.array(z.string()),
         updatedAt: z.date(),
+        author: z.object({
+          name: z.string(),
+          title: z.string(),
+          img: z.string(),
+        }),
+        createdAt: z.date(),
       }),
     }),
     cookbookTOC: defineCollection({
