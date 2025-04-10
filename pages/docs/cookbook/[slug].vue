@@ -24,5 +24,6 @@ const { data: recipe } = await useAsyncData(() => {
 useSeoMeta({
   title: recipe.value?.title,
   description: recipe.value?.description,
+  ogImage: `https://stores-tools.vercel.app${recipe.value?.meta?.image}`,
 })
 </script>
