@@ -38,7 +38,7 @@ Even though we are using Todoist and Slack in this example, you can also use [a 
 To get started, we first set the following environment variables in our `.env` file:
 
 - `TODOIST_API_TOKEN`: The API key of your Todoist account (see below)
-- `SLACK_WEBHOOKS`: The webhook URL of the Slack channel for the AI agent to post in (see below)
+- `SLACK_WEBHOOKS`: The channels and respective webhook URLs for the AI agent to post in (see below)
 - `<COMPANY>_API_KEY`: The API key of the model you want to use
 
 ### Todoist API key
@@ -64,13 +64,9 @@ We will need to set up [a Slack webhook](https://api.slack.com/messaging/webhook
 7. Copy the newly created webhook and save it as an environment variable
 8. Repeat this for as many channels as you want your AI agent to post to
 
-You can format your `SLACK_WEBHOOKs` environment variable as a string or an object:
+You must format your `SLACK_WEBHOOKs` environment variable as a strictly valid JSON-encoded object:
 
-```env
-# A string for a single webhook
-SLACK_WEBHOOKS=<WEBHOOK_TO_GENERAL_CHANNEL>
-
-# A strictly valid JSON-encoded object for multiple webhooks
+```bash [.env]
 SLACK_WEBHOOKS='{"general": "<WEBHOOK_TO_GENERAL_CHANNEL>", "random": "<WEBHOOK_TO_RANDOM_CHANNEL>"}'
 ```
 
@@ -491,8 +487,8 @@ while True:
             # Append the assistant's tool call as context
             messages.append(
                 {"role": "assistant", "tool_calls": [tool_call]}
-            )  
-            
+            )
+
             # Append the tool call result as context
             messages.append(
                 {
@@ -500,7 +496,7 @@ while True:
                     "tool_call_id": tool_call.id,
                     "content": str(output),
                 }
-            ) 
+            )
 ```
 ::
 
