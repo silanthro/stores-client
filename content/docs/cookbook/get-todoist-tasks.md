@@ -10,11 +10,15 @@ createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---
 
-# Getting tasks from Todoist
+# Get tasks from Todoist
 
 We all dream to have our own AI personal assistant someday. While the perfect AI assistant might still be far away, we can build simple AI agents that work with Todoist today.
 
-In this simple example, our AI agent has [tools to do the following with our Todoist account](https://github.com/silanthro/todoist):
+## Scenario
+
+For this demo, we will focus on simply getting the tasks due today from Todoist. 
+
+Our AI agent has [tools to do the following with our Todoist account](https://github.com/silanthro/todoist):
 
 - Get tasks
 - Create tasks
@@ -22,15 +26,11 @@ In this simple example, our AI agent has [tools to do the following with our Tod
 - Complete tasks
 - Delete tasks
 
-## Scenario
-
-For this demo, we will focus on simply getting the tasks due today from Todoist. 
-
 But you can use our Todoist tools to create new tasks or update, close, and delete existing tasks. You can even [combine it with other tools to create a more capable AI assistant](/docs/cookbook/complete-todoist-tasks).
 
 ## Setup
 
-To get started, we first set the following environment variables: 
+To get started, we first set the following environment variables in a `.env` file: 
 
 - `TODOIST_API_TOKEN`: The API key of the Todoist account you want to use
 - `<COMPANY>_API_KEY`: The API key of the model you want to use

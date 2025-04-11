@@ -10,26 +10,15 @@ createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---
 
-# Renaming files with AI
+# Rename files with AI
 
 If you have a messy folder of files, like I do, wouldn't it be great if an AI agent can help to sort and rename them accordingly?
 
-In this simple example, our AI agent will help me rename files in a folder using [our filesystem operation tools](https://github.com/silanthro/filesystem). It has tools to do the following:
-
-- Read files
-- Create files
-- Edit files
-- Create directories
-- List the children of a directory
-- Move files and directories
-- Find files and directories
-- And more
-
-**Note:** The tool to read files can currently only read plaintext files, code files, and markdown files but not documents, media files, or binary files.
-
 ## Scenario
 
-For this demo, we will show how to rename files in a folder with the help of an LLM.
+![Filesystem Operation Flowchart](/img/cookbook/rename-files/fs-flowchart.jpg)
+
+For this demo, we will show how to rename files in a folder with the help of an LLM. 
 
 The AI agent will list the files in the folder, read the content of the files, and then rename them accordingly.
 
@@ -46,6 +35,19 @@ I have a `test` folder with a `doc.md` file. It contains an itinerary for Perth.
 
 This itinerary offers a perfect blend of nature, culture, and leisure activities, showcasing the best of Perth and its surroundings.
 ```
+
+To complete this tasks, our AI agent is equipped with [our filesystem operation tools](https://github.com/silanthro/filesystem), which enable it to:
+
+- Read files
+- Create files
+- Edit files
+- Create directories
+- List the children of a directory
+- Move files and directories
+- Find files and directories
+- And more
+
+**Note:** The tool to read files can currently only read plaintext files, code files, and markdown files but not documents, media files, or binary files.
 
 ## Setup
 
