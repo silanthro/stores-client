@@ -21,9 +21,16 @@ const { data: recipe } = await useAsyncData(() => {
   return queryCollection('cookbook').path(`/docs/cookbook/${slug}`).first()
 })
 
+const host = ref('https://stores-tools.vercel.app')
+if (import.meta.client) {
+  host.value = window.location.protocol + '//' + window.location.host
+}
+
 useSeoMeta({
   title: recipe.value?.title,
   description: recipe.value?.description,
-  ogImage: `https://stores-tools.vercel.app${recipe.value?.meta?.image}`,
+  ogImage: recipe.value?.meta?.image
+    ? `${host.value}${recipe.value?.meta?.image}`
+    : undefined,
 })
 </script>
