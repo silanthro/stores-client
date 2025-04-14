@@ -1,6 +1,7 @@
 ---
 title: 'Research and add to Notion'
 description: 'Build an AI agent that can research Hacker News and add its findings to Notion'
+image: '/img/cookbook/research-to-notion/notion-flowchart.jpg'
 author:
   name: 'Alfred'
   title: 'Co-founder'
@@ -62,7 +63,7 @@ With an internal integration, we have to explicitly grant access to specific pag
 
 ![Notion Connections](/img/cookbook/research-to-notion/notion-connections.jpg)
 
-The AI agent will then be able to access only this page and its children. 
+The AI agent will then be able to access only this page and its children.
 
 ## Scripts
 
@@ -464,8 +465,8 @@ while True:
             # Append the assistant's tool call as context
             messages.append(
                 {"role": "assistant", "tool_calls": [tool_call]}
-            )  
-            
+            )
+
             # Append the tool call result as context
             messages.append(
                 {
@@ -473,7 +474,7 @@ while True:
                     "tool_call_id": tool_call.id,
                     "content": str(output),
                 }
-            ) 
+            )
 ```
 ::
 

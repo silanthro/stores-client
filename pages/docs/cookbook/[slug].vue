@@ -28,9 +28,12 @@ if (import.meta.client) {
 
 useSeoMeta({
   title: recipe.value?.title,
+  ogTitle: recipe.value?.title,
   description: recipe.value?.description,
+  ogDescription: recipe.value?.description,
   ogImage: recipe.value?.meta?.image
     ? `${host.value}${recipe.value?.meta?.image}`
     : undefined,
+  twitterCard: 'summary_large_image',
 })
 </script>
