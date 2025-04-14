@@ -1,6 +1,7 @@
 ---
 title: 'Complete tasks with Todoist'
 description: 'Build an AI agent that can get tasks from Todoist and complete them'
+image: '/img/cookbook/complete-todoist-tasks/todoist-flowchart.jpg'
 author:
   name: 'Alfred'
   title: 'Co-founder'
@@ -483,7 +484,7 @@ while True:
             messages.append(
                 {"role": "assistant", "tool_calls": [tool_call]}
             )
-            
+
             # Append the tool call result as context
             messages.append(
                 {
@@ -491,7 +492,7 @@ while True:
                     "tool_call_id": tool_call.id,
                     "content": str(output),
                 }
-            ) 
+            )
 ```
 ::
 

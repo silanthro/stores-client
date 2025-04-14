@@ -1,11 +1,11 @@
 ---
 title: 'Get tasks from Todoist'
 description: 'Build an AI agent that can get tasks from Todoist, create new tasks, and manage existing tasks'
-author: 
+author:
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
-tags: ["Productivity"]
+tags: ['Productivity']
 createdAt: 2025-04-03
 updatedAt: 2025-04-03
 ---
@@ -16,7 +16,7 @@ We all dream to have our own AI personal assistant someday. While the perfect AI
 
 ## Scenario
 
-For this demo, we will focus on simply getting the tasks due today from Todoist. 
+For this demo, we will focus on simply getting the tasks due today from Todoist.
 
 Our AI agent has [tools to do the following with our Todoist account](https://github.com/silanthro/todoist):
 
@@ -30,12 +30,12 @@ But you can use our Todoist tools to create new tasks or update, close, and dele
 
 ## Setup
 
-To get started, we first set the following environment variables in a `.env` file: 
+To get started, we first set the following environment variables in a `.env` file:
 
 - `TODOIST_API_TOKEN`: The API key of the Todoist account you want to use
 - `<COMPANY>_API_KEY`: The API key of the model you want to use
 
-Now, we are ready to load the Todoist tools and build our AI agent. 
+Now, we are ready to load the Todoist tools and build our AI agent.
 
 ## Scripts
 
@@ -280,7 +280,6 @@ result = index.execute(
     json.loads(tool_call.function.arguments),
 )
 print(f"Tool output: {result}")
-
 ```
 ::
 

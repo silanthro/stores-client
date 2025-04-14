@@ -1,6 +1,7 @@
 ---
 title: 'Rename file'
 description: 'Build an AI agent that can find, read, write, and edit files on your computer'
+image: '/img/cookbook/rename-files/fs-flowchart.jpg'
 author:
   name: 'Alfred'
   title: 'Co-founder'
@@ -18,7 +19,7 @@ If you have a messy folder of files, like I do, wouldn't it be great if an AI ag
 
 ![Filesystem Operation Flowchart](/img/cookbook/rename-files/fs-flowchart.jpg)
 
-For this demo, we will show how to rename files in a folder with the help of an LLM. 
+For this demo, we will show how to rename files in a folder with the help of an LLM.
 
 The AI agent will list the files in the folder, read the content of the files, and then rename them accordingly.
 
