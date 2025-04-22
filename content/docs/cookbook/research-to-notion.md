@@ -6,7 +6,7 @@ author:
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
-tags: ['Productivity']
+tags: ['Research']
 createdAt: 2025-04-09
 updatedAt: 2025-04-09
 ---

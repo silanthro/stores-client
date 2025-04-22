@@ -31,7 +31,7 @@ To complete this task, our AI agent is equipped with tools to:
 - [Get, update, and close tasks in Todoist](https://github.com/silanthro/todoist)
 - [Send messages on Slack](https://github.com/silanthro/slack)
 
-Even though we are using Todoist and Slack in this example, you can also use [a research tool](/docs/cookbook/research-to-notion) to send news in Slack or use [a email tool to send yourself](/docs/cookbook/send-email) your tasks.
+Even though we are using Todoist and Slack in this example, you can also use [a research tool](/docs/cookbook/research-to-notion) to send news in Slack or use [an email tool to send yourself](/docs/cookbook/send-email) your tasks.
 
 ## Setup
 
