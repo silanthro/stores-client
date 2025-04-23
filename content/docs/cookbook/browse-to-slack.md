@@ -1,55 +1,46 @@
 ---
-title: Get today's tasks in Slack
-description: 'Build an AI agent that can get tasks from Slack'
-image: '/img/cookbook/get-tasks-in-slack/slack-flowchart.jpg'
+title: Get latest launches in Slack
+description: 'Build an AI agent that can browse Product Hunt, get the latest launches, and send them to Slack'
+image: '/img/cookbook/browse-to-slack/browse-flowchart.jpg'
 author:
   name: 'Alfred'
   title: 'Co-founder'
   img: '/img/alfred.jpg'
-tags: ['Productivity']
-createdAt: 2025-04-10
-updatedAt: 2025-04-10
+tags: ['Research']
+createdAt: 2025-04-22
+updatedAt: 2025-04-22
 ---
 
-# Get today's tasks in Slack
+# Get latest Product Hunt launches in Slack
 
-If I have a personal assistant, I'd love the person to message me my todo list for the day, ordered by priority, in Slack. For now, I'll build an AI agent to do that instead.
+I love trying out new products but visiting Product Hunt is a chore. Why not bring Product Hunt to me? Let's build an AI agent to browse Product Hunt and send me a summary of the latest products in Slack.
 
 ## Scenario
 
-![Slack Flowchart](/img/cookbook/get-tasks-in-slack/slack-flowchart.jpg)
+![Browse Flowchart](/img/cookbook/browse-to-slack/browse-flowchart.jpg)
 
-For this demo, we will show how to build an AI agent that can get the tasks due today from Todoist and message us on Slack.
+For this demo, we will show how to build an AI agent that can browse Product Hunt, get the latest product launches, and message us on Slack.
 
 Specifically, our AI agent will:
 
-1. Get the tasks due today from Todoist
-2. Message us on Slack
+1. Use [Browser Use](https://browser-use.com/) to browse producthunt.com
+2. Get the top product launches for the past day
+3. Message us a list on Slack
 
 To complete this task, our AI agent is equipped with tools to:
 
-- [Get, update, and close tasks in Todoist](https://github.com/silanthro/todoist)
-- [Send messages on Slack](https://github.com/silanthro/slack)
+- [Browse the web](/tools/silanthro/basic-browser-use)
+- [Send messages on Slack](/tools/silanthro/slack)
 
-Even though we are using Todoist and Slack in this example, you can also use [a research tool](/docs/cookbook/research-to-notion) to send news in Slack or use [an email tool to send yourself](/docs/cookbook/send-email) your tasks.
+Even though we are using Slack in this example, you can also use [an email tool to email yourself](/docs/cookbook/send-email) the latest product launches.
 
 ## Setup
 
 To get started, we first set the following environment variables in our `.env` file:
 
-- `TODOIST_API_TOKEN`: The API key of your Todoist account (see below)
 - `SLACK_WEBHOOKS`: The channels and respective webhook URLs for the AI agent to post in (see below)
-- `<COMPANY>_API_KEY`: The API key of the model you want to use
-
-### Todoist API key
-
-To get your Todoist API key:
-
-1. Click on your profile icon in the top-left corner
-2. Select "Settings"
-3. Click on "Integrations"
-4. Click on "Developer"
-5. Copy the API token and save it as an environment variable
+- `GEMINI_API_KEY`: Your Gemini API key for the Browser Use tool (the tool only supports Gemini for now)
+- `<COMPANY>_API_KEY`: The API key of the model you want to use (unless you are using Gemini; note that LangChain, LangGraph, and LlamaIndex uses `GOOGLE_API_KEY` for Gemini)
 
 ### Slack webhooks setup
 
@@ -64,7 +55,7 @@ We will need to set up [a Slack webhook](https://api.slack.com/messaging/webhook
 7. Copy the newly created webhook and save it as an environment variable
 8. Repeat this for as many channels as you want your AI agent to post to
 
-You must format your `SLACK_WEBHOOKs` environment variable as a strictly valid JSON-encoded object:
+You must format your `SLACK_WEBHOOKs` environment variable as a strictly valid JSON-encoded object. The channel names should not include the "#" prefix.
 
 ```bash [.env]
 SLACK_WEBHOOKS='{"general": "<WEBHOOK_TO_GENERAL_CHANNEL>", "random": "<WEBHOOK_TO_RANDOM_CHANNEL>"}'
@@ -74,12 +65,10 @@ The AI agent will then be able to only post messages to only these channels. It 
 
 ## Scripts
 
-Some APIs and frameworks (e.g. Gemini, LangGraph, and LlamaIndex agent) automatically execute tool calls, which make the code much simpler. For the rest, we will need to add a `while` loop so that the agent will keep working on the next step until the task is completed.
-
-From my experiments, Gemini 2.0 Flash prefers to ask questions instead of using the tools to find the information it needs. You can either specify in the system prompt to use tools or try Gemini 2.5 Pro, which is much better at using tools.
+Some frameworks (e.g. LangGraph and LlamaIndex agent) automatically execute tool calls, which make the code much simpler. For the rest, we will need to add a `while` loop so that the agent will keep working on the next step until the task is completed.
 
 ::content-multi-code
-```python {4, 9-20, 38-39, 58-61} [Anthropic]
+```python {4, 9-17, 35-36, 55-58} [Anthropic]
 import os
 import anthropic
 from dotenv import load_dotenv
@@ -90,11 +79,8 @@ load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
@@ -106,7 +92,7 @@ client = anthropic.Anthropic()
 messages = [
     {
         "role": "user",
-        "content": "Let me know my tasks and their priority for today in bullet points in Slack #general",
+        "content": "Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions",
     }
 ]
 
@@ -171,7 +157,7 @@ while True:
                 }
             )
 ```
-```python {5, 10-21, 23-25} [Gemini]
+```python {5, 10-18, 23-24, 65-68} [Gemini]
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -183,29 +169,85 @@ load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
     },
 )
 
-# Initialize the chat with the model and tools
+# Initialize Gemini client and messages
 client = genai.Client()
-config = types.GenerateContentConfig(tools=index.tools)
-chat = client.chats.create(model="gemini-2.5-pro-exp-03-25", config=config)
-
-# Get the response from the model. Gemini will automatically execute the tool call.
-response = chat.send_message(
-    "Let me know my tasks and their priority for today in bullet points in Slack #general. Don't ask questions; use your tools.",
+config = types.GenerateContentConfig(
+    # Pass tools
+    tools=index.tools,
+    # Automatic function calling doesn't support coroutine functions, such as the Basic Browser Use tools
+    automatic_function_calling=types.AutomaticFunctionCallingConfig(
+        disable=True 
+    ),
 )
-print(f"Assistant response: {response.candidates[0].content.parts[0].text}")
+messages = [
+    {
+        "role": "user",
+        "parts": [
+            {
+                "text": "Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions. Don't ask questions."
+            }
+        ],
+    }
+]
+
+# Run the agent loop
+while True:
+    # Get the response from the model
+    response = client.models.generate_content(
+        model="gemini-2.0-flash-001",
+        contents=messages,
+        config=config,
+    )
+
+    # Check if all parts contain only text and no function call, which indicates task completion for this example
+    parts = response.candidates[0].content.parts
+    if all(part.text and not part.function_call for part in parts):
+        print(f"Assistant response: {parts[0].text}")
+        break  # End the agent loop
+
+    # Otherwise, process the response, which could include both text and tool use
+    for part in parts:
+        if part.text:
+            print(f"Assistant response: {part.text}")
+            messages.append({"role": "model", "parts": [{"text": part.text}]})
+        elif part.function_call:
+            name = part.function_call.name
+            args = part.function_call.args
+
+            # Execute the tool call
+            print(f"Executing tool call: {name}({args})\n")
+            output = index.execute(name, args)
+            print(f"Tool output: {output}\n")
+
+            # Append the assistant's tool call as context
+            messages.append(
+                {"role": "model", "parts": [{"functionCall": part.function_call}]}
+            )
+
+            # Append the tool call result as context
+            messages.append(
+                {
+                    "role": "user",
+                    "parts": [
+                        {
+                            "functionResponse": {
+                                "name": name,
+                                "response": {"output": output},
+                            }
+                        }
+                    ],
+                }
+            )
 ```
-```python {5,10-21,38-39,57-60} [OpenAI]
+```python {5,10-18,35-36,54-57} [OpenAI]
 import json
 import os
 from dotenv import load_dotenv
@@ -217,11 +259,8 @@ load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
@@ -233,7 +272,7 @@ client = OpenAI()
 messages = [
     {
         "role": "user",
-        "content": "Let me know my tasks and their priority for today in bullet points in Slack #general",
+        "content": "Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions",
     }
 ]
 
@@ -279,7 +318,7 @@ while True:
                 }
             )
 ```
-```python {5,10-21,23-25,57-60} [LangChain]
+```python {5,10-18,20-22,54-57} [LangChain]
 import os
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, ToolMessage
@@ -291,11 +330,8 @@ load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
@@ -303,11 +339,11 @@ index = stores.Index(
 )
 
 # Initialize the model with tools
-model = ChatGoogleGenerativeAI(model="gemini-2.5-pro-exp-03-25")
+model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
 model_with_tools = model.bind_tools(index.tools)
 messages = [
     HumanMessage(
-        content="Let me know my tasks and their priority for today in bullet points in Slack #general. Don't ask questions; use your tools.",
+        content="Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions. Don't ask questions.",
     ),
 ]
 
@@ -346,7 +382,8 @@ while True:
                 ToolMessage(content=output, tool_call_id=tool_call["id"])
             )
 ```
-```python {6,11-22,24-26} [LangGraph]
+```python {7,12-20,22-24} [LangGraph]
+import asyncio
 import os
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
@@ -359,11 +396,8 @@ load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
@@ -371,23 +405,28 @@ index = stores.Index(
 )
 
 # Initialize the LangGraph agent with the tools
-agent_model = ChatGoogleGenerativeAI(model="gemini-2.5-pro-exp-03-25")
+agent_model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-04-17")
 agent_executor = create_react_agent(agent_model, index.tools)
 
 # Get the response from the agent. The LangGraph agent will automatically
 # execute the tool call.
-response = agent_executor.invoke(
-    {
-        "messages": [
-            HumanMessage(
-                content="Let me know my tasks and their priority for today in bullet points in Slack #general. Don't ask questions; use your tools.",
-            )
-        ]
-    }
-)
-print(f"Assistant response: {response['messages'][-1].content}")
+async def main():
+    # Basic Browser Use tools are async functions
+    response = await agent_executor.ainvoke(
+        {
+            "messages": [
+                HumanMessage(
+                    content="Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions. Don't ask questions.",
+                )
+            ]
+        }
+    )
+    print(f"Assistant response: {response['messages'][-1].content}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
-```python {6,11-22,24-25,27-29} [LlamaIndex]
+```python {6,11-19,21-22,24-26} [LlamaIndex]
 import os
 from dotenv import load_dotenv
 from llama_index.core.agent import AgentRunner
@@ -400,11 +439,8 @@ load_dotenv()
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
@@ -420,10 +456,10 @@ agent = AgentRunner.from_llm(tools, llm=llm, verbose=True)
 
 # Get the response from the LlamaIndex agent. The LlamaIndex agent will
 # automatically execute the tool call.
-response = agent.chat("Let me know my tasks and their priority for today in bullet points in Slack #general. Don't ask questions; use your tools.")
+response = agent.chat("Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions. Don't ask questions.")
 print(f"Assistant response: {response}")
 ```
-```python {4,6-17,33-34,56-59} [LiteLLM]
+```python {4,6-14,30-31,53-56} [LiteLLM]
 import json
 import os
 from litellm import completion
@@ -431,11 +467,8 @@ import stores
 
 # Load tools and set the required environment variables
 index = stores.Index(
-    ["silanthro/todoist", "silanthro/slack"],
+    ["silanthro/basic-browser-use", "silanthro/slack"],
     env_var={
-        "silanthro/todoist": {
-            "TODOIST_API_TOKEN": os.environ["TODOIST_API_TOKEN"],
-        },
         "silanthro/slack": {
             "SLACK_WEBHOOKS": os.environ["SLACK_WEBHOOKS"],
         },
@@ -446,7 +479,7 @@ index = stores.Index(
 messages = [
     {
         "role": "user",
-        "content": "Let me know my tasks and their priority for today in bullet points in Slack #general. Don't ask questions; use your tools.",
+        "content": "Message me in #general the top 5 launches on Product Hunt from the past day and their descriptions. Don't ask questions.",
     },
 ]
 
@@ -454,7 +487,7 @@ messages = [
 while True:
     # Get the response from the model
     response = completion(
-        model="gemini/gemini-2.5-pro-exp-03-25",
+        model="gemini/gemini-2.0-flash-001",
         messages=messages,
         # Pass tools
         tools=index.format_tools("google-gemini"),
@@ -503,13 +536,13 @@ while True:
 In the folder where you have this script, you can run the AI agent with the command:
 
 ```bash
-python get-tasks-in-slack.py
+python browse-to-slack.py
 ```
 
-The AI agent will get the tasks due today from Todoist and message you on Slack.
+The AI agent will get the latest product launches from Product Hunt and message you on Slack.
 
-![Tasks in Slack](/img/cookbook/get-tasks-in-slack/tasks-in-slack.jpg)
+![Product Launches in Slack](/img/cookbook/browse-to-slack/product-launches-in-slack.jpg)
 
-To make this AI agent even more useful, you can set up a cron job to run this script every morning and get a daily task brief in your Slack.
+To make this AI agent even more useful, you can set up a cron job to run this script every morning and get a daily product launch alert in your Slack.
 
 If you have any questions, let us know on [GitHub](https://github.com/silanthro/stores).
