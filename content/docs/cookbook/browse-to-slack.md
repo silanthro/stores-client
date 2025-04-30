@@ -546,21 +546,18 @@ index = stores.Index(
 )
 ```
 
-Then to print the steps, use `stream_execute`, instead of `execute`, and iterate over the output:
+Then to print the steps, use `stream_execute`, instead of `execute`, and iterate over the steps. Here, I print the final result if there is one. Otherwise, I print the completed action.
 
 ```python
-print(f"[agent] 🚀 Starting task: {args}")
-for i, output in enumerate(index.stream_execute(name, args)):
-    print(f"[agent] 📍 Step {i+1}")
-    if "type" in output and output["type"] == "result":
-        print(f"[agent] 📄 Result: {output['data']}")
-        print()
-    else:
-        print(f"[agent] 👍 Eval: {output['data']['current_state']['evaluation_previous_goal']}")
-        print(f"[agent] 🧠 Memory: {output['data']['current_state']['memory']}")
-        print(f"[agent] 🎯 Next Goal: {output['data']['current_state']['next_goal']}")
-        print(f"[agent] 🛠️ Action: {output['data']['action']}")
-        print()
+print(f"[Browser Agent] 🚀  Starting task: {args}\n")
+for step in index.stream_execute(name, args):
+    # Print final result
+    if "type" in step and step["type"] == "result":
+        print(f"[Browser Agent] 📄  Result: {step['data']}\n")
+        output = step["data"] 
+    # Otherwise, print completed actions
+    elif "result" in step["data"]:
+        print(f"[Browser Agent] {step['data']['result']}\n")
 ```
 
 It will look something like this:
