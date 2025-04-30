@@ -533,6 +533,39 @@ while True:
 ```
 ::
 
+### Streaming Browser Use steps
+
+For simplicity, the scripts above don't stream the steps of Browser Use. 
+
+By default, the LLM will ignore `stream_browser_agent` if `run_browser_agent` is provided. `run_browser_agent` will simply return the final result of the browsing task. If you want to stream the steps, specifically include only `stream_browser_agent` so that your agent will use it.
+
+```python
+index = stores.Index(
+    ["silanthro/basic-browser-use"],
+    include={"silanthro/basic-browser-use": ["basic_browser_use.stream_browser_agent"]}
+)
+```
+
+Then to print the steps, use `stream_execute`, instead of `execute`, and iterate over the steps. Here, I print the final result if there is one. Otherwise, I print the completed action.
+
+```python
+print(f"[Browser Agent] 🚀  Starting task: {args}\n")
+for step in index.stream_execute(name, args):
+    # Print final result
+    if "type" in step and step["type"] == "result":
+        print(f"[Browser Agent] 📄  Result: {step['data']}\n")
+        output = step["data"] 
+    # Otherwise, print completed actions
+    elif "result" in step["data"]:
+        print(f"[Browser Agent] {step['data']['result']}\n")
+```
+
+It will look something like this:
+
+![Streaming Browser Use steps](/img/cookbook/browse-to-slack/browser-use-stream.jpg)
+
+### Running the agent
+
 In the folder where you have this script, you can run the AI agent with the command:
 
 ```bash
