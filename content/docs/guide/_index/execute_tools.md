@@ -17,6 +17,8 @@ There are four ways to execute a tool call:
 
 `Index.execute` takes the tool name and a dictionary comprising the arguments, and returns the output of the executed function.
 
+If the tool returns a generator, `Index.execute` will return the final yielded result. You can pass `collect_results=True` to collect all the results into a list.
+
 **A note on async:** Regardless of whether the tool is an `async` function, `Index.execute` will run in a synchronous manner.
 
 ```python {10-14} [openai_example.py]
@@ -32,6 +34,7 @@ tool_call = completion.choices[0].message.tool_calls[0]
 result = index.execute(
     toolname=tool_call.function.name,
     kwargs=json.loads(tool_call.function.arguments),
+    collect_results=True # optional
 )
 print(result)
 ```
@@ -56,6 +59,7 @@ async def main():
     result = await index.aexecute(
         toolname=tool_call.function.name,
         kwargs=json.loads(tool_call.function.arguments),
+        collect_results=True # optional
     )
     print(result)
 ```
